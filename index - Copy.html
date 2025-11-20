@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Niya — Story Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #F8F4E8;          /* cream */
+      --bg-soft: #FCF9F0;     /* softer cream for cards */
+      --text: #2F2E35;        /* ink */
+      --accent: #4C2A72;      /* deep purple */
+      --accent-soft: #AFA2C4; /* lavender */
+      --highlight: #E3B74B;   /* warm yellow */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(227,183,75,0.22), transparent 55%),
+        radial-gradient(circle at top right, rgba(76,42,114,0.18), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      background-color: rgba(248,244,232,0.96);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--accent);
+    }
+
+    .brand img {
+      height: 100px;            /* tweak if needed */
+      width: auto;
+      display: block;
+      filter: brightness(0) saturate(100%)invert(9%)sepia(23%)saturate(600%) hue-rotate(230deg)brightness(95%)contrast(100%)
+    }
+
+    .brand span {
+      font-weight: 650;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    nav a {
+      margin-left: 1.3rem;
+      font-size: 0.9rem;
+      text-transform: lowercase;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.25rem;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--highlight), var(--accent-soft));
+      transition: width 0.2s ease-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2.5rem 1.75rem 4rem;
+    }
+
+    section {
+      margin-bottom: 3.1rem;
+      position: relative;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      margin-bottom: 0.85rem;
+    }
+
+    h1, h2 {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-weight: 500;
+      margin: 0 0 1.1rem;
+      color: var(--accent);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.05rem;
+    }
+
+    h2 {
+      font-size: 1.32rem;
+      margin-top: 0.4rem;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.3rem;
+      width: 2.5rem;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--highlight), var(--accent-soft));
+    }
+
+    p {
+      margin: 0 0 0.75rem;
+      font-size: 0.98rem;
+    }
+
+    .divider {
+      margin: 2.4rem 0;
+      border: none;
+      border-top: 1px dashed rgba(0,0,0,0.12);
+    }
+
+    .hero-card {
+      background: var(--bg-soft);
+      border-radius: 18px;
+      padding: 1.5rem 1.35rem 1.6rem;
+      border: 1px solid rgba(76,42,114,0.12);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(227,183,75,0.4), transparent 60%);
+      opacity: 0.6;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 0.18rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(76,42,114,0.06);
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-pill span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--highlight), var(--accent));
+    }
+
+    .tagline {
+      font-size: 1.03rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, rgba(227,183,75,0.25), rgba(175,162,196,0.25));
+      padding: 0.08em 0.18em;
+      border-radius: 0.3em;
+    }
+
+    .hero-story {
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      color: rgba(0,0,0,0.78);
+    }
+
+    .note {
+      font-size: 0.82rem;
+      color: rgba(0,0,0,0.6);
+      margin-top: 0.3rem;
+    }
+
+    footer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 1.75rem 2.5rem;
+      font-size: 0.85rem;
+      color: rgba(0,0,0,0.6);
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    /* subtle vertical accent on sections */
+    .section-wrap {
+      border-left: 3px solid rgba(76,42,114,0.12);
+      padding-left: 1.15rem;
+    }
+
+    /* placeholder pages */
+    .placeholder-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 1.75rem 5rem;
+      display: none;
+    }
+
+    .placeholder-page h1 {
+      font-family: "Georgia", serif;
+      font-weight: 500;
+      font-size: 1.8rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .placeholder-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(227,183,75,0.16);
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 900px) {
+      header, main, footer, .placeholder-page {
+        padding-left: 2.75rem;
+        padding-right: 2.75rem;
+      }
+
+      h1 { font-size: 2.2rem; }
+    }
+  </style>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelector('main').style.display = 'none';
+      document.querySelectorAll('.placeholder-page')
+        .forEach(p => p.style.display = 'none');
+      document.getElementById(pageId).style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function showHome() {
+      document.querySelectorAll('.placeholder-page')
+        .forEach(p => p.style.display = 'none');
+      document.querySelector('main').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+  </script>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand" onclick="showHome()">
+      <!-- use your actual logo image here -->
+      <img src="niya-logo.PNG" alt="Niya logo">
+      <!-- <span>NIYA</span> uncomment if you want the text next to the image -->
+    </div>
+    <nav>
+      <a href="#" onclick="showHome()">home</a>
+      <a href="#" onclick="showPage('aboutPage')">about</a>
+      <a href="#" onclick="showPage('contactPage')">contact</a>
+    </nav>
+  </header>
+
+  <!-- MAIN ONE-PAGE SITE -->
+  <main>
+    <!-- HERO -->
+    <section id="home">
+      <div class="hero-card">
+        <div class="hero-pill">
+          <span></span>
+          A Storytelling Studio
+        </div>
+        <div class="eyebrow">niya from <em>niyat</em> — intention, purpose</div>
+        <h1>Niya — Purpose-driven storytelling that brings complex ideas into clarity.</h1>
+        <p class="tagline">
+          <span class="highlight">Rooted in purpose.</span>
+          Shaped by technical knowledge and data literacy. Built to make your idea unforgettable.
+        </p>
+        <p class="hero-story">
+          Everything starts as a story. Humans sat around the fire and shared what they had seen,
+          remembered, and imagined. Niya is a small, modern version of that circle.
+        </p>
+        <p class="note">
+          For founders, teams, and companies building things that are hard to explain, but too important to be misunderstood.
+        </p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-wrap">
+        <h2>About</h2>
+
+        <p>Niya comes from the Urdu word <em>niyat</em>, meaning intention or purpose.</p>
+        <p>This studio exists to bring that sense of purpose into technical, complex work — through writing.</p>
+
+        <p>Niya helps founders and companies turn deep, intricate ideas into narratives that people actually understand.</p>
+        <p>
+          We look for the deeper why behind what you’re building and use it to shape the language in your pitches,
+          whitepapers, explainers, decks, and long-form pieces.
+        </p>
+
+        <p>
+          The studio is grounded in data-driven understanding —
+          comfortable with systems, models, research, and complexity —
+          and shaped by a lifelong relationship with story, poetry, and meaning-making.
+        </p>
+
+        <p>
+          Niya sits at that intersection:
+          <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong>
+        </p>
+
+        <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="section-wrap">
+        <h2>Sample ways we can work together</h2>
+
+        <p><strong>Founder & origin stories</strong> — shaping the deeper “why” behind what you’re building into a clear, shareable narrative.</p>
+        <p><strong>Pitch decks & investor narratives</strong> — tightening the story around your market, product, and vision so every slide has intent.</p>
+        <p><strong>Technical explainers & product pages</strong> — translating complex systems, data, and architectures into language people actually understand.</p>
+        <p><strong>Whitepapers & thought pieces</strong> — structured, long-form writing that holds both rigor and resonance.</p>
+        <p><strong>Research & data storytelling</strong> — turning dashboards, models, and analysis into stories that move decisions.</p>
+        <p><strong>Narrative audits</strong> — reviewing your current materials (site, deck, docs) and mapping where the story is missing, muddy, or misaligned.</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHILOSOPHY -->
+    <section id="philosophy">
+      <div class="section-wrap">
+        <h2>Philosophy</h2>
+
+        <p>Every idea has a pulse: the intention, the niyat, it was built from.</p>
+        <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
+
+        <p>
+          Most people can explain what they’ve built,
+          but very few can articulate why it matters in a way that feels human, precise, and memorable.
+        </p>
+
+        <p>Niya translates complexity without diluting it.</p>
+        <p>We turn technical depth and data into clarity,</p>
+        <p>clarity into insight,</p>
+        <p>and insight into narrative.</p>
+
+        <p>This is how purpose becomes story,</p>
+        <p>and story becomes strategy.</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- CONTACT (inline) -->
+    <section id="contact">
+      <div class="section-wrap">
+        <h2>Contact</h2>
+        <p>
+          If you’re building something technical, complex, or difficult to explain,
+          and you want the story to finally feel clear:
+        </p>
+        <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- PLACEHOLDER ABOUT PAGE -->
+  <div id="aboutPage" class="placeholder-page">
+    <div class="placeholder-tag">about · long-form</div>
+    <h1>About Niya</h1>
+    <p>
+      This is a placeholder for a deeper About page — where you can eventually add a longer studio story,
+      process, or timeline. For now, the main “About” on the homepage holds the core narrative.
+    </p>
+  </div>
+
+  <!-- PLACEHOLDER CONTACT PAGE -->
+  <div id="contactPage" class="placeholder-page">
+    <div class="placeholder-tag">contact</div>
+    <h1>Work with Niya</h1>
+    <p>
+      This page can grow into a fuller contact / intake space: how projects work, timelines, or FAQs.
+      For now, reach out directly:
+    </p>
+    <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+  </div>
+
+  <footer>
+    <div>© Niya Story Studio</div>
+    <div class="footer-meta">
+      <span>New York</span>
+      <span>Purpose-driven storytelling</span>
+    </div>
+  </footer>
+
+</body>
+</html>
