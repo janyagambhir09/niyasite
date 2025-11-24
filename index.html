@@ -62,10 +62,13 @@
     }
 
     .brand img {
-      height: 100px;            /* tweak if needed */
+      height: 120px;
       width: auto;
       display: block;
-      filter: brightness(0) saturate(100%)invert(9%)sepia(23%)saturate(600%) hue-rotate(230deg)brightness(95%)contrast(100%)
+      position: relative;
+      z-index: 20;
+      filter: brightness(0) saturate(100%) invert(9%) sepia(23%)
+              saturate(600%) hue-rotate(230deg) brightness(95%) contrast(100%);
     }
 
     .brand span {
@@ -100,7 +103,7 @@
     main {
       max-width: 780px;
       margin: 0 auto;
-      padding: 2.5rem 1.75rem 4rem;
+      padding: 2.2rem 1.75rem 4rem;
     }
 
     section {
@@ -155,8 +158,67 @@
       border-top: 1px dashed rgba(0,0,0,0.12);
     }
 
+    /* HERO SECTION with gradient background */
+    .hero-section {
+      background:
+        radial-gradient(circle at top left, rgba(227,183,75,0.32), transparent 60%),
+        radial-gradient(circle at top right, rgba(76,42,114,0.38), transparent 60%),
+        radial-gradient(circle at bottom center, rgba(175,162,196,0.4), transparent 65%),
+        var(--bg);
+      border-radius: 32px;
+      padding: 2.2rem 1.6rem 2.8rem;
+      box-shadow: 0 22px 40px rgba(0,0,0,0.06);
+    }
+
+    /* Hero artwork (Fairy Tale painting) */
+    .hero-art-wrap {
+      width: 100%;
+      margin: 0 0 1.2rem;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-art-image {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 330px;
+    }
+
+    /* Hover overlay for context */
+    .hero-art-hover {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(44,24,73,0.25),
+        rgba(44,24,73,0.82)
+      );
+      color: #F8F4E8;
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+      padding: 1.2rem;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .hero-art-wrap:hover .hero-art-hover {
+      opacity: 1;
+    }
+
+    /* Caption under artwork */
+    .hero-art-caption {
+      font-size: 0.8rem;
+      color: rgba(0,0,0,0.65);
+      margin: 0 0 1.8rem;
+      font-style: italic;
+    }
+
     .hero-card {
-      background: var(--bg-soft);
+      background: rgba(252,249,240,0.96);
       border-radius: 18px;
       padding: 1.5rem 1.35rem 1.6rem;
       border: 1px solid rgba(76,42,114,0.12);
@@ -237,13 +299,11 @@
       margin-top: 0.5rem;
     }
 
-    /* subtle vertical accent on sections */
     .section-wrap {
       border-left: 3px solid rgba(76,42,114,0.12);
       padding-left: 1.15rem;
     }
 
-    /* placeholder pages */
     .placeholder-page {
       max-width: 780px;
       margin: 0 auto;
@@ -303,9 +363,7 @@
 
   <header>
     <div class="brand" onclick="showHome()">
-      <!-- use your actual logo image here -->
-      <img src="niya-logo.PNG" alt="Niya logo">
-      <!-- <span>NIYA</span> uncomment if you want the text next to the image -->
+      <img src="naya-logo.PNG" alt="Niya logo">
     </div>
     <nav>
       <a href="#" onclick="showHome()">home</a>
@@ -314,51 +372,53 @@
     </nav>
   </header>
 
-  <!-- MAIN ONE-PAGE SITE -->
   <main>
-    <!-- HERO -->
-    <section id="home">
-      <section id="home">
 
-  <!-- FULL-WIDTH HERO IMAGE -->
-  <div style="
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto 2rem;
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 18px 30px rgba(0,0,0,0.06);
-  ">
-    <img src="fire.png"
-         alt="Campfire storytelling illustration"
-         style="
-           width: 100%;
-           display: block;
-         ">
-  </div>
+    <!-- HERO START -->
+    <section id="home" class="hero-section">
 
-  <div class="hero-card">
+      <div class="hero-art-wrap">
+        <img
+          src="fairytale.jpeg"
+          alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
+          class="hero-art-image">
+
+        <div class="hero-art-hover">
+          <div>
+            <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
+         This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression. Fairytales are at the heart of Lithuanian culture, so the two figures exchanging a glowing mystical world is a symbolization of sharing stories and imagination, an act of cultural resistance.
+          </div>
+        </div>
+      </div>
+
+      <p class="hero-art-caption">
+        <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis. 
+      </p>
 
       <div class="hero-card">
         <div class="hero-pill">
           <span></span>
           A Storytelling Studio
         </div>
-        <!-- <div class="eyebrow">niya from <em>niyat</em> — intention, purpose</div> -->
+
         <h1>Niya — Purpose-driven storytelling that brings complex ideas into clarity.</h1>
+
         <p class="tagline">
           <span class="highlight">Rooted in purpose.</span>
-          Shaped by technical knowledge and data literacy. Built to make your idea unforgettable.
+          Shaped by technical knowledge and data literacy.
+          Built to make your idea unforgettable.
         </p>
+
         <p class="hero-story">
-          Everything starts as a story. Humans sat around the fire and shared what they had seen,
-          remembered, and imagined. Niya is a small, modern version of that circle.
+          Every idea begins as an inner world. But for a world to be understood, it has to be shared. Niya works in that moment of transformation: moving that inner world from one pair of hands to another, to be illuminated and shared.
         </p>
+
         <p class="note">
-          For founders, teams, and companies building things that are hard to explain, but too important to be misunderstood.
+          For people building things that are hard to explain, but too important to be misunderstood.
         </p>
       </div>
     </section>
+    <!-- HERO END -->
 
     <hr class="divider">
 
@@ -367,26 +427,11 @@
       <div class="section-wrap">
         <h2>About</h2>
 
-        <p>Niya comes from the Urdu word <em>niyat</em>, meaning intention or purpose.</p>
-        <p>This studio exists to bring that sense of purpose into technical, complex work — through writing.</p>
+        <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand.</p>
+        <p>We look for the deeper why behind what you’re building and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
+        <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with story and meaning-making.</p>
 
-        <p>Niya helps founders and companies turn deep, intricate ideas into narratives that people actually understand.</p>
-        <p>
-          We look for the deeper why behind what you’re building and use it to shape the language in your pitches,
-          whitepapers, explainers, decks, and long-form pieces.
-        </p>
-
-        <p>
-          The studio is grounded in data-driven understanding —
-          comfortable with systems, models, research, and complexity —
-          and shaped by a lifelong relationship with story, poetry, and meaning-making.
-        </p>
-
-        <p>
-          Niya sits at that intersection:
-          <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong>
-        </p>
-
+        <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
         <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
       </div>
     </section>
@@ -398,12 +443,12 @@
       <div class="section-wrap">
         <h2>Sample ways we can work together</h2>
 
-        <p><strong>Founder & origin stories</strong> — shaping the deeper “why” behind what you’re building into a clear, shareable narrative.</p>
-        <p><strong>Pitch decks & investor narratives</strong> — tightening the story around your market, product, and vision so every slide has intent.</p>
-        <p><strong>Technical explainers & product pages</strong> — translating complex systems, data, and architectures into language people actually understand.</p>
-        <p><strong>Whitepapers & thought pieces</strong> — structured, long-form writing that holds both rigor and resonance.</p>
-        <p><strong>Research & data storytelling</strong> — turning dashboards, models, and analysis into stories that move decisions.</p>
-        <p><strong>Narrative audits</strong> — reviewing your current materials (site, deck, docs) and mapping where the story is missing, muddy, or misaligned.</p>
+        <p><strong>Founder & origin stories</strong> — shaping the deeper “why” behind what you’re building into a shareable narrative.</p>
+        <p><strong>Pitch decks & investor narratives</strong> — tightening the story around your market, product, and vision.</p>
+        <p><strong>Technical explainers & product pages</strong> — translating complex systems and architecture into language people understand.</p>
+        <p><strong>Whitepapers & thought pieces</strong> — long-form writing with rigor and resonance.</p>
+        <p><strong>Research & data storytelling</strong> — turning analysis into stories that move decisions.</p>
+        <p><strong>Narrative audits</strong> — mapping where your story is missing, muddy, or misaligned.</p>
       </div>
     </section>
 
@@ -414,15 +459,11 @@
       <div class="section-wrap">
         <h2>Philosophy</h2>
 
-        <p>Every idea has a pulse: the intention, the niyat, it was built from.</p>
+        <p>Every idea has a pulse: the intention it was built from.</p>
         <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
-
-        <p>
-          Most people can explain what they’ve built,
-          but very few can articulate why it matters in a way that feels human, precise, and memorable.
-        </p>
-
+        <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
         <p>Niya translates complexity without diluting it.</p>
+
         <p>We turn technical depth and data into clarity,</p>
         <p>clarity into insight,</p>
         <p>and insight into narrative.</p>
@@ -434,37 +475,29 @@
 
     <hr class="divider">
 
-    <!-- CONTACT (inline) -->
+    <!-- CONTACT -->
     <section id="contact">
       <div class="section-wrap">
         <h2>Contact</h2>
-        <p>
-          If you’re building something technical, complex, or difficult to explain,
-          and you want the story to finally feel clear:
-        </p>
+        <p>If you’re building something technical, complex, or difficult to explain — and you want the story to finally feel clear:</p>
         <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
       </div>
     </section>
+
   </main>
 
-  <!-- PLACEHOLDER ABOUT PAGE -->
+  <!-- ABOUT PAGE -->
   <div id="aboutPage" class="placeholder-page">
     <div class="placeholder-tag">about · long-form</div>
     <h1>About Niya</h1>
-    <p>
-      This is a placeholder for a deeper About page — where you can eventually add a longer studio story,
-      process, or timeline. For now, the main “About” on the homepage holds the core narrative.
-    </p>
+    <p>This is a placeholder for a deeper About page. The main homepage holds the core narrative.</p>
   </div>
 
-  <!-- PLACEHOLDER CONTACT PAGE -->
+  <!-- CONTACT PAGE -->
   <div id="contactPage" class="placeholder-page">
     <div class="placeholder-tag">contact</div>
     <h1>Work with Niya</h1>
-    <p>
-      This page can grow into a fuller contact / intake space: how projects work, timelines, or FAQs.
-      For now, reach out directly:
-    </p>
+    <p>This page can grow into a fuller intake space — timelines, FAQs, process. For now, reach out directly:</p>
     <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
   </div>
 
@@ -478,5 +511,3 @@
 
 </body>
 </html>
-
-
