@@ -18,6 +18,13 @@
     * {
       box-sizing: border-box;
     }
+    <script>
+  function toggleHeroInfo() {
+    var overlay = document.querySelector('.hero-art-hover');
+    if (!overlay) return;
+    overlay.classList.toggle('is-visible');
+  }
+</script>
 
     body {
            margin: 0;
@@ -208,22 +215,31 @@
 
     /* Hover overlay for context */
     .hero-art-hover {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(15, 23, 42, 0.25),
-        rgba(15, 23, 42, 0.9)
-      );
-      color: #F8F4E8;
-      opacity: 0;
-      transition: opacity 0.25s ease-out;
-      padding: 1.2rem;
-      display: flex;
-      align-items: flex-end;
-      font-size: 0.84rem;
-      line-height: 1.5;
-    }
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.25),
+    rgba(15, 23, 42, 0.9)
+  );
+  color: #F8F4E8;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+  padding: 1.2rem;
+  display: flex;
+  align-items: flex-end;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+/* show on desktop hover OR when toggled by JS */
+.hero-art-wrap:hover .hero-art-hover,
+.hero-art-hover.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 
     .hero-art-wrap:hover .hero-art-hover {
       opacity: 1;
@@ -392,7 +408,7 @@
     <!-- HERO START -->
     <section id="home" class="hero-section">
 
-      <div class="hero-art-wrap">
+      <div class="hero-art-wrap" onclick = toggleHeroInfo()>
         <img
           src="fairytale.jpeg"
           alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
@@ -503,7 +519,7 @@
 
   <!-- ABOUT PAGE -->
   <div id="aboutPage" class="placeholder-page">
-    <div class="placeholder-tag">about · long-form</div>
+    <div class="placeholder-tag">about</div>
     <h1>About Niya</h1>
       <img src="about.jpeg" alt="Janya portrait" class="about-photo">
 
@@ -536,6 +552,7 @@
 
 </body>
 </html>
+
 
 
 
