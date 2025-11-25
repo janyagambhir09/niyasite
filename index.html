@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg: #F8F4E8;          /* cream */
-      --bg-soft: #FCF9F0;     /* softer cream for cards */
+      --bg-soft: #FCF9F0;     /* softer cream */
       --text: #2F2E35;        /* ink */
       --accent: #4C2A72;      /* deep purple */
       --accent-soft: #AFA2C4; /* lavender */
@@ -22,8 +22,8 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at top left, rgba(227,183,75,0.22), transparent 55%),
-        radial-gradient(circle at top right, rgba(76,42,114,0.18), transparent 55%),
+        radial-gradient(circle at top left, rgba(227,183,75,0.18), transparent 55%),
+        radial-gradient(circle at top right, rgba(76,42,114,0.12), transparent 55%),
         var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
@@ -40,17 +40,20 @@
       text-decoration: underline;
     }
 
+    /* HEADER: logo + nav floating over hero, no bar */
     header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.1rem 1.5rem;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      position: sticky;
-      top: 0;
-      background-color: rgba(248,244,232,0.96);
-      backdrop-filter: blur(8px);
-      z-index: 10;
+      padding: 1.2rem 2rem;
+      border: none;
+      background: transparent;
+      backdrop-filter: none;
+      z-index: 20;
     }
 
     .brand {
@@ -62,13 +65,13 @@
     }
 
     .brand img {
-      height: 120px;
+      height: 100px;
       width: auto;
       display: block;
       position: relative;
       z-index: 20;
-      filter: brightness(0) saturate(100%) invert(9%) sepia(23%)
-              saturate(600%) hue-rotate(230deg) brightness(95%) contrast(100%);
+      /* tweak or remove filter depending on your logo asset */
+      filter: none;
     }
 
     .brand span {
@@ -104,6 +107,7 @@
       max-width: 780px;
       margin: 0 auto;
       padding: 2.2rem 1.75rem 4rem;
+      position: relative;
     }
 
     section {
@@ -158,37 +162,29 @@
       border-top: 1px dashed rgba(0,0,0,0.12);
     }
 
-    /* HERO SECTION — full-width watercolor gradient, no box */
+    /* HERO: watercolor gradient, no card */
     .hero-section {
       position: relative;
-      margin: -2.2rem -1.75rem 3.1rem; /* bleed to edges of viewport */
-      padding: 3rem 1.75rem 3.2rem;
+      margin: 0 -1.75rem 3.1rem;
+      padding: 5.5rem 1.75rem 3.3rem;
       overflow: hidden;
       border-radius: 0;
       background:
-        radial-gradient(circle at 0% 0%, rgba(76, 42, 114, 0.55), transparent 60%),
-        radial-gradient(circle at 100% 0%, rgba(227, 183, 75, 0.55), transparent 62%),
-        radial-gradient(circle at 50% 120%, rgba(88, 139, 182, 0.6), transparent 60%),
-        linear-gradient(135deg, #0b1020 0%, #201b3f 40%, #745b9a 75%, #f3c86c 100%);
+        radial-gradient(circle at 0% 0%, rgba(76, 42, 114, 0.55), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(227, 183, 75, 0.5), transparent 58%),
+        radial-gradient(circle at 50% 120%, rgba(165, 132, 190, 0.45), transparent 60%),
+        linear-gradient(180deg, #f8f0e5 0%, #e4d4c2 45%, #d5c3b3 100%);
       background-blend-mode: screen, normal, soft-light, normal;
-      color: #FDF7EE;
-    }
-
-    .hero-section h1,
-    .hero-section .tagline,
-    .hero-section .hero-story,
-    .hero-section .note {
-      color: #FDF7EE;
     }
 
     /* Hero artwork (Fairy Tale painting) */
     .hero-art-wrap {
       width: 100%;
-      margin: 0 0 0.8rem;
+      margin: 0 0 1rem;
       border-radius: 24px;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 18px 40px rgba(5, 10, 30, 0.45);
+      box-shadow: 0 18px 40px rgba(10, 10, 30, 0.35);
     }
 
     .hero-art-image {
@@ -224,14 +220,15 @@
     /* Caption under artwork */
     .hero-art-caption {
       font-size: 0.8rem;
-      color: rgba(248, 244, 232, 0.84);
+      color: rgba(38, 25, 60, 0.78);
       margin: 0 0 1.8rem;
       font-style: italic;
     }
 
     /* Hero copy directly on gradient (no card) */
     .hero-copy {
-      max-width: 640px;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     .hero-pill {
@@ -243,8 +240,8 @@
       letter-spacing: 0.16em;
       padding: 0.18rem 0.75rem;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.35);
-      color: #FDF7EE;
+      background: rgba(76,42,114,0.06);
+      color: var(--accent);
       margin-bottom: 0.9rem;
     }
 
@@ -253,10 +250,6 @@
       height: 6px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--highlight), var(--accent));
-    }
-
-    .hero-section h1 {
-      color: #FDF7EE;
     }
 
     .tagline {
@@ -277,12 +270,12 @@
     .hero-story {
       font-size: 0.9rem;
       margin-bottom: 0.75rem;
-      color: rgba(253, 247, 238, 0.9);
+      color: rgba(34, 24, 52, 0.9);
     }
 
     .note {
       font-size: 0.82rem;
-      color: rgba(253, 247, 238, 0.8);
+      color: rgba(34, 24, 52, 0.7);
       margin-top: 0.3rem;
     }
 
@@ -302,7 +295,7 @@
       margin-top: 0.5rem;
     }
 
-    /* Remove card-like rail from the side sections */
+    /* Simpler, more editorial sections (no side card rail) */
     .section-wrap {
       border-left: none;
       padding-left: 0;
@@ -336,17 +329,21 @@
     }
 
     @media (min-width: 900px) {
+      header {
+        padding: 1.4rem 2.75rem;
+      }
+
       header, main, footer, .placeholder-page {
         padding-left: 2.75rem;
         padding-right: 2.75rem;
       }
 
-      h1 { font-size: 2.2rem; }
-
       .hero-section {
-        margin: -2.2rem -2.75rem 3.1rem;
-        padding: 3.4rem 2.75rem 3.6rem;
+        margin: 0 -2.75rem 3.1rem;
+        padding: 6rem 2.75rem 3.6rem;
       }
+
+      h1 { font-size: 2.2rem; }
     }
   </style>
 
@@ -410,7 +407,7 @@
           A Storytelling Studio
         </div>
 
-        <h1>Niya — Purpose-driven narratives that turn complex ideas into compelling stories</h1>
+        <h1>Niya — storytelling that translates complex ideas into clarity.</h1>
 
         <p class="tagline">
           <span class="highlight">Rooted in purpose.</span>
