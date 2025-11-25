@@ -20,24 +20,23 @@
     }
 
     body {
-         margin: 0;
+           margin: 0;
   background:
- margin: 0;
-  background:
-   margin: 0;
-  background:
-    radial-gradient(circle at 15% 10%, rgba(83, 62, 122, 0.55), transparent 60%),
-    radial-gradient(circle at 90% 5%, rgba(227, 199, 129, 0.55), transparent 65%),
-    radial-gradient(circle at 50% 100%, rgba(222, 195, 218, 0.55), transparent 70%),
-    linear-gradient(180deg, #FBF7F0 0%, #F7EDE1 40%, #F0DFC9 100%);
-  background-blend-mode: soft-light, normal, multiply, normal;
-  background-attachment: fixed; /* important: keeps it saturated + full page */
-  height: 100%;
+    /* soft lavender sweep from bottom-left */
+    radial-gradient(circle at 10% 80%, rgba(189, 151, 227, 0.35), transparent 60%),
+    /* warm pink/peach sweep from bottom-center/right */
+    radial-gradient(circle at 80% 85%, rgba(238, 187, 170, 0.30), transparent 60%),
+    /* gentle warm light from top-right */
+    radial-gradient(circle at 90% 15%, rgba(239, 210, 170, 0.35), transparent 55%),
+    /* main white → cream paper gradient */
+    linear-gradient(180deg, #FFFFFF 0%, #FBF5EE 38%, #F3E2D6 100%);
+  background-blend-mode: soft-light, soft-light, normal, normal;
+  background-attachment: fixed;
   min-height: 100vh;
+  color: var(--text);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
                "Segoe UI", sans-serif;
   line-height: 1.6;
-  color: var(--text);
 
     a {
       color: var(--accent);
@@ -518,6 +517,7 @@
 
 </body>
 </html>
+
 
 
 
