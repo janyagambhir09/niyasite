@@ -18,32 +18,26 @@
     * {
       box-sizing: border-box;
     }
-    <script>
-  function toggleHeroInfo() {
-    var overlay = document.querySelector('.hero-art-hover');
-    if (!overlay) return;
-    overlay.classList.toggle('is-visible');
-  }
-</script>
 
     body {
-           margin: 0;
-  background:
-    /* soft lavender sweep from bottom-left */
-    radial-gradient(circle at 10% 80%, rgba(189, 151, 227, 0.35), transparent 60%),
-    /* warm pink/peach sweep from bottom-center/right */
-    radial-gradient(circle at 80% 85%, rgba(238, 187, 170, 0.30), transparent 60%),
-    /* gentle warm light from top-right */
-    radial-gradient(circle at 90% 15%, rgba(239, 210, 170, 0.35), transparent 55%),
-    /* main white → cream paper gradient */
-    linear-gradient(180deg, #FFFFFF 0%, #FBF5EE 38%, #F3E2D6 100%);
-  background-blend-mode: soft-light, soft-light, normal, normal;
-  background-attachment: fixed;
-  min-height: 100vh;
-  color: var(--text);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-               "Segoe UI", sans-serif;
-  line-height: 1.6;
+      margin: 0;
+      background:
+        /* soft lavender sweep from bottom-left */
+        radial-gradient(circle at 10% 80%, rgba(189, 151, 227, 0.35), transparent 60%),
+        /* warm pink/peach sweep from bottom-center/right */
+        radial-gradient(circle at 80% 85%, rgba(238, 187, 170, 0.30), transparent 60%),
+        /* gentle warm light from top-right */
+        radial-gradient(circle at 90% 15%, rgba(239, 210, 170, 0.35), transparent 55%),
+        /* main white → cream paper gradient */
+        linear-gradient(180deg, #FFFFFF 0%, #FBF5EE 38%, #F3E2D6 100%);
+      background-blend-mode: soft-light, soft-light, normal, normal;
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
 
     a {
       color: var(--accent);
@@ -70,14 +64,14 @@
       z-index: 20;
     }
 
-      .about-photo {
-  width: 220px;
-  height: auto;
-  border-radius: 16px;
-  display: block;
-  margin: 0 auto 1.8rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-}
+    .about-photo {
+      width: 220px;
+      height: auto;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto 1.8rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
 
     .brand {
       display: inline-flex;
@@ -186,12 +180,12 @@
       border-top: 1px dashed rgba(0,0,0,0.12);
     }
 
-    /* HERO: NO background here – it just sits on the body gradient */
+    /* HERO: no background here – it just sits on the body gradient */
     .hero-section {
       position: relative;
       margin: 0 0 3.1rem;
-      padding: 5.0rem 0 3.3rem;
-      background: transparent; /* key: no extra rectangle */
+      padding: 5rem 0 3.3rem;
+      background: transparent;
     }
 
     /* Hero artwork (Fairy Tale painting) */
@@ -208,41 +202,35 @@
       width: 100%;
       display: block;
       object-fit: cover;
+      object-position: center top; /* show more of the bottom of the painting */
       max-height: 420px;
-      border-radius: 0 !important;
-      box-shadow: none !important;
     }
 
     /* Hover overlay for context */
     .hero-art-hover {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.25),
-    rgba(15, 23, 42, 0.9)
-  );
-  color: #F8F4E8;
-  opacity: 0;
-  transition: opacity 0.25s ease-out;
-  padding: 1.2rem;
-  display: flex;
-  align-items: flex-end;
-  font-size: 0.84rem;
-  line-height: 1.5;
-  pointer-events: none;
-}
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.25),
+        rgba(15, 23, 42, 0.9)
+      );
+      color: #F8F4E8;
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+      padding: 1.2rem;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      pointer-events: none;
+    }
 
-/* show on desktop hover OR when toggled by JS */
-.hero-art-wrap:hover .hero-art-hover,
-.hero-art-hover.is-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-
-    .hero-art-wrap:hover .hero-art-hover {
+    /* show on desktop hover OR when toggled by JS */
+    .hero-art-wrap:hover .hero-art-hover,
+    .hero-art-hover.is-visible {
       opacity: 1;
+      pointer-events: auto;
     }
 
     /* Caption under artwork */
@@ -386,6 +374,12 @@
       document.querySelector('main').style.display = 'block';
       window.scrollTo(0, 0);
     }
+
+    function toggleHeroInfo() {
+      var overlay = document.querySelector('.hero-art-hover');
+      if (!overlay) return;
+      overlay.classList.toggle('is-visible');
+    }
   </script>
 </head>
 
@@ -408,7 +402,7 @@
     <!-- HERO START -->
     <section id="home" class="hero-section">
 
-      <div class="hero-art-wrap" onclick = toggleHeroInfo()>
+      <div class="hero-art-wrap" onclick="toggleHeroInfo()">
         <img
           src="fairytale.jpeg"
           alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
@@ -432,7 +426,7 @@
           A Storytelling Studio
         </div>
 
-        <h1>Niya — Purpose-driven narratives that transform complex ideas into stories.</h1>
+        <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
 
         <p class="tagline">
           <span class="highlight">Rooted in purpose.</span>
@@ -521,24 +515,27 @@
   <div id="aboutPage" class="placeholder-page">
     <div class="placeholder-tag">about</div>
     <h1>About Niya</h1>
-      <img src="about.jpeg" alt="Janya portrait" class="about-photo">
 
-  <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
+    <img src="about.jpeg" alt="Janya portrait" class="about-photo">
 
-  <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
+    <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
 
-  <p>Now, as Head of Data and Engineering at Nuvert, an AI education company, I lead the development of pipelines, models, and internal tooling that support fast decision-making and system-wide alignment across a growing startup.</p>
+    <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
 
-  <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
+    <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
 
-  <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank">janya.netlify.app</a></p>
+    <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
+
+    <p>
+
+    <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank">janya.netlify.app</a></p>
   </div>
 
   <!-- CONTACT PAGE -->
   <div id="contactPage" class="placeholder-page">
     <div class="placeholder-tag">contact</div>
     <h1>Work with Niya</h1>
-    <p>This page can grow into a fuller intake space — timelines, FAQs, process. For now, reach out directly:</p>
+    <p>To explore a collaboration, please reach out at:</p>
     <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
   </div>
 
@@ -552,13 +549,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
