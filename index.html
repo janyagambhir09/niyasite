@@ -21,10 +21,13 @@
 
     body {
       margin: 0;
+      /* Single watercolor-style gradient for the whole page */
       background:
-        radial-gradient(circle at top left, rgba(227,183,75,0.18), transparent 55%),
-        radial-gradient(circle at top right, rgba(76,42,114,0.12), transparent 55%),
-        var(--bg);
+        radial-gradient(circle at 0% 0%, rgba(76, 42, 114, 0.40), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(227, 183, 75, 0.45), transparent 60%),
+        radial-gradient(circle at 50% 130%, rgba(165, 132, 190, 0.40), transparent 60%),
+        linear-gradient(180deg, #f8f0e5 0%, #e4d4c2 45%, #d5c3b3 100%);
+      background-blend-mode: screen, multiply, soft-light, normal;
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
                    "Segoe UI", sans-serif;
@@ -40,7 +43,7 @@
       text-decoration: underline;
     }
 
-    /* HEADER: logo + nav floating over hero, no bar */
+    /* HEADER: logo + nav floating, no bar */
     header {
       position: absolute;
       top: 0;
@@ -69,7 +72,7 @@
       display: block;
       position: relative;
       z-index: 20;
-      filter: none; /* keep your source logo as-is */
+      filter: none;
     }
 
     .brand span {
@@ -108,6 +111,7 @@
       margin: 0 auto;
       padding: 2.2rem 1.75rem 4rem;
       position: relative;
+      background: transparent;  /* important: no inner box */
     }
 
     section {
@@ -162,22 +166,15 @@
       border-top: 1px dashed rgba(0,0,0,0.12);
     }
 
-    /* HERO: watercolor gradient, no card, no box behind image */
+    /* HERO: NO background here – it just sits on the body gradient */
     .hero-section {
       position: relative;
-      margin: 0 -1.75rem 3.1rem;
-      padding: 5.5rem 1.75rem 3.3rem;
-      overflow: hidden;
-      border-radius: 0;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(76, 42, 114, 0.55), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(227, 183, 75, 0.5), transparent 58%),
-        radial-gradient(circle at 50% 120%, rgba(165, 132, 190, 0.45), transparent 60%),
-        linear-gradient(180deg, #f8f0e5 0%, #e4d4c2 45%, #d5c3b3 100%);
-      background-blend-mode: screen, multiply, soft-light, normal;
+      margin: 0 0 3.1rem;
+      padding: 5.5rem 0 3.3rem;
+      background: transparent; /* key: no extra rectangle */
     }
 
-    /* Hero artwork (Fairy Tale painting) — open, no frame */
+    /* Hero artwork (Fairy Tale painting) */
     .hero-art-wrap {
       width: 100%;
       margin: 0 0 1rem;
@@ -288,6 +285,7 @@
       font-size: 0.85rem;
       color: rgba(0,0,0,0.6);
       border-top: 1px solid rgba(0,0,0,0.08);
+      background: transparent;
     }
 
     .footer-meta {
@@ -297,7 +295,6 @@
       margin-top: 0.5rem;
     }
 
-    /* Simpler, editorial sections */
     .section-wrap {
       border-left: none;
       padding-left: 0;
@@ -308,6 +305,7 @@
       margin: 0 auto;
       padding: 4rem 1.75rem 5rem;
       display: none;
+      background: transparent;
     }
 
     .placeholder-page h1 {
@@ -340,11 +338,6 @@
         padding-right: 2.75rem;
       }
 
-      .hero-section {
-        margin: 0 -2.75rem 3.1rem;
-        padding: 6rem 2.75rem 3.6rem;
-      }
-
       h1 { font-size: 2.2rem; }
     }
   </style>
@@ -372,8 +365,7 @@
   <header>
     <div class="brand" onclick="showHome()">
       <img src="naya-logo.PNG" alt="Niya logo">
-      <!-- optional wordmark if you want it -->
-      <!-- <span>NIYA</span> -->
+      <!-- <span>NIYA</span> optional wordmark -->
     </div>
     <nav>
       <a href="#" onclick="showHome()">home</a>
