@@ -24,16 +24,20 @@
   background:
  margin: 0;
   background:
-    radial-gradient(circle at 18% 25%, rgba(138,106,174,0.65), transparent 55%),
-    radial-gradient(circle at 85% 20%, rgba(230,194,122,0.65), transparent 60%),
-    radial-gradient(circle at 50% 100%, rgba(217,195,221,0.55), transparent 70%),
-    linear-gradient(180deg, #FBF7F0 0%, #F1E0D0 40%, #E3CFBF 100%);
+   margin: 0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(83, 62, 122, 0.55), transparent 60%),
+    radial-gradient(circle at 90% 5%, rgba(227, 199, 129, 0.55), transparent 65%),
+    radial-gradient(circle at 50% 100%, rgba(222, 195, 218, 0.55), transparent 70%),
+    linear-gradient(180deg, #FBF7F0 0%, #F7EDE1 40%, #F0DFC9 100%);
   background-blend-mode: soft-light, normal, multiply, normal;
-  color: var(--text);
+  background-attachment: fixed; /* important: keeps it saturated + full page */
+  height: 100%;
+  min-height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
                "Segoe UI", sans-serif;
   line-height: 1.6;
-    }
+  color: var(--text);
 
     a {
       color: var(--accent);
@@ -514,6 +518,7 @@
 
 </body>
 </html>
+
 
 
 
