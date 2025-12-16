@@ -1,688 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Niya — Story Studio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Niya — Story Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Optional: nicer serif + clean sans (safe fallbacks if blocked) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      /* Paper/editorial palette */
-      --paper: #F3EEE4;
-      --paper-2:#F7F2E9;
-      --ink:   #17151a;
-      --muted: rgba(23,21,26,.66);
-      --hairline: rgba(23,21,26,.14);
+<style>
+:root{
+  --paper:#F3EEE4;
+  --ink:#17151a;
+  --muted:rgba(23,21,26,.6);
+  --accent:#2E1B3A;
+  --gold:#D8B35D;
+}
 
-      --accent: #2E1B3A;      /* deep plum/ink */
-      --accent-soft: #A79CB7; /* dusty lavender */
-      --highlight: #D8B35D;   /* warm gold */
+*{box-sizing:border-box}
 
-      --max: 1080px;
-    }
+html{scroll-behavior:smooth}
 
-    *{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family:Inter,system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 10% 80%, rgba(170,140,210,.18), transparent 60%),
+    radial-gradient(circle at 90% 85%, rgba(232,186,168,.18), transparent 60%),
+    linear-gradient(180deg,#fff 0%,#F7F2E9 40%,var(--paper) 100%);
+  background-attachment:fixed;
+}
 
-    html{ scroll-behavior:smooth; }
+/* grain */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
 
-    body{
-      margin:0;
-      min-height:100vh;
-      color: var(--ink);
+/* HEADER */
+header{
+  position:fixed;
+  top:0;left:0;right:0;
+  padding:.9rem 1.2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(247,242,233,.6);
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+.brand img{height:48px}
+nav a{
+  margin-left:1rem;
+  font-size:.8rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink);
+  text-decoration:none;
+}
+nav a:hover{text-decoration:underline}
 
-      /* paper texture + subtle gradients */
-      background:
-        radial-gradient(circle at 12% 80%, rgba(170, 140, 210, 0.18), transparent 60%),
-        radial-gradient(circle at 86% 84%, rgba(232, 186, 168, 0.16), transparent 62%),
-        radial-gradient(circle at 90% 14%, rgba(239, 215, 170, 0.20), transparent 58%),
-        linear-gradient(180deg, #fff 0%, var(--paper-2) 36%, var(--paper) 100%);
-      background-attachment: fixed;
+/* MAIN */
+main{
+  max-width:1200px;
+  margin:0 auto;
+  padding:6rem 1.2rem 4rem;
+}
 
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      line-height:1.6;
-    }
+/* POSTER */
+.hero-poster{
+  position:relative;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:18px;
+  padding:1rem;
+  background:
+    radial-gradient(circle at 50% 15%, rgba(0,0,0,.08), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.15));
+  box-shadow:0 20px 70px rgba(0,0,0,.12);
+  overflow:hidden;
+}
 
-    /* subtle grain overlay */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.12;
-      mix-blend-mode:multiply;
-      background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-      background-size:220px 220px;
-    }
+/* top nav inside poster */
+.poster-topnav{
+  display:flex;
+  justify-content:center;
+  gap:1.2rem;
+  font-size:.7rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:.8rem;
+}
+.poster-topnav a{color:var(--muted);text-decoration:none}
+.poster-topnav a:hover{text-decoration:underline}
 
-    a{ color: var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+/* GRID */
+.poster-grid{
+  display:grid;
+  grid-template-columns:1.2fr .6fr 1fr;
+  gap:1rem;
+}
 
-    /* left scroll progress */
-    .progress{
-      position:fixed;
-      left: 18px;
-      top: 110px;
-      width: 2px;
-      height: calc(100vh - 160px);
-      background: rgba(23,21,26,.08);
-      z-index:30;
-      border-radius:999px;
-      overflow:hidden;
-      display:none;
-    }
-    .progress > i{
-      display:block;
-      width:100%;
-      height: 0%;
-      background: linear-gradient(180deg, var(--highlight), rgba(167,156,183,.95));
-      border-radius:999px;
-    }
-    @media (min-width: 980px){
-      .progress{ display:block; }
-    }
+/* TYPE */
+.poster-kicker{
+  font-size:.7rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:.6rem;
+}
 
-    /* HEADER: floating */
-    header{
-      position: fixed;
-      top:0; left:0; right:0;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding: 1.05rem 1.5rem;
-      z-index: 40;
+.poster-h1{
+  font-family:Fraunces,serif;
+  text-transform:uppercase;
+  font-weight:450;
+  line-height:.92;
+  letter-spacing:.03em;
+  font-size:clamp(2.3rem,4.8vw,4.4rem);
+}
+.poster-h1 div{margin:.05em 0}
 
-      /* very light glass, still “no bar” */
-      background: rgba(247,242,233,.55);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(23,21,26,.06);
-    }
+.poster-enter{
+  margin-top:1rem;
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+  font-size:.7rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.poster-enter span:last-child{
+  width:38px;height:38px;
+  border-radius:50%;
+  border:1px solid rgba(0,0,0,.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:.5rem;
-      cursor:pointer;
-      user-select:none;
-    }
-    .brand img{
-      height: 54px; /* smaller, more editorial */
-      width:auto;
-      display:block;
-      filter:none;
-    }
-    nav a{
-      margin-left:1.1rem;
-      font-size:.9rem;
-      text-transform: lowercase;
-      color: var(--accent);
-      position:relative;
-      opacity:.92;
-    }
-    nav a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-0.28rem;
-      width:0;
-      height:2px;
-      background: linear-gradient(90deg, var(--highlight), var(--accent-soft));
-      transition: width .2s ease-out;
-    }
-    nav a:hover::after{ width:100%; }
+/* CENTER */
+.poster-center{
+  text-align:center;
+  padding-top:2.4rem;
+}
+.poster-your{
+  font-family:Fraunces,serif;
+  text-transform:uppercase;
+  font-size:clamp(1.6rem,3vw,2.8rem);
+  letter-spacing:.08em;
+}
+.poster-amp{
+  font-family:Fraunces,serif;
+  font-size:clamp(1.2rem,2vw,2rem);
+  color:var(--muted);
+}
 
-    /* main wrapper */
-    main{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 6.2rem 1.4rem 4rem; /* account for fixed header */
-      position:relative;
-    }
+/* COLLAGE */
+.poster-collage{
+  position:relative;
+  min-height:420px;
+}
+.poster-collage img{
+  position:absolute;
+  filter:drop-shadow(0 14px 28px rgba(0,0,0,.12));
+}
 
-    /* “paper sheet” feel around the content */
-    .paper{
-      position:relative;
-      padding: 2.2rem 1.25rem 2.4rem;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.16));
-      border: 1px solid rgba(23,21,26,.08);
-      box-shadow: 0 18px 60px rgba(10,10,12,.08);
-      border-radius: 18px;
-    }
-    @media (min-width: 980px){
-      .paper{ padding: 2.9rem 3rem 3.1rem; }
-    }
+.collage-main{
+  right:-10px;
+  top:0;
+  width:330px;
+}
+.collage-vine{
+  right:10px;
+  top:40px;
+  width:260px;
+}
 
-    /* section spacing + numbered label */
-    section{
-      margin-bottom: 3.1rem;
-      position:relative;
-    }
+.stamp-eye{
+  left:-10px;
+  top:240px;
+  width:120px;
+  transform:rotate(-6deg);
+}
+.stamp-portrait{
+  left:50px;
+  top:330px;
+  width:90px;
+  transform:rotate(4deg);
+}
 
-    .chapter{
-      display:flex;
-      align-items:baseline;
-      gap: .9rem;
-      margin-bottom: .85rem;
-    }
-    .chapter .num{
-      font-size:.85rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: var(--accent-soft);
-      min-width: 44px;
-    }
-    .chapter .label{
-      font-size:.82rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color: rgba(23,21,26,.55);
-    }
+/* ABOUT EXPERIENCE BAND */
+.poster-band{
+  display:grid;
+  grid-template-columns:1fr 1.3fr auto;
+  gap:1rem;
+  border-top:1px solid rgba(0,0,0,.15);
+  padding:1.2rem 1rem;
+  margin-top:1.2rem;
+}
 
-    /* editorial serif */
-    h1,h2{
-      font-family: Fraunces, "Georgia", "Times New Roman", serif;
-      font-weight: 450;
-      color: var(--accent);
-      margin:0 0 1rem;
-      line-height:1.12;
-    }
-    h1{ font-size: 2.45rem; }
-    h2{ font-size: 1.55rem; }
+.band-title{
+  font-family:Fraunces,serif;
+  text-transform:uppercase;
+  font-size:clamp(1.6rem,2.5vw,2.3rem);
+  line-height:.9;
+}
+.band-copy p{
+  margin:0 0 .4rem;
+  font-size:.95rem;
+}
+.band-stamp{
+  width:70px;
+  border-radius:12px;
+  transform:rotate(-3deg);
+}
 
-    p{
-      margin:0 0 .85rem;
-      font-size: 1.02rem;
-      color: rgba(23,21,26,.88);
-      max-width: 70ch;
-    }
+/* BOTTOM COLLAGE */
+.poster-bottom img{
+  width:100%;
+  border-radius:14px;
+  margin-top:1rem;
+  border:1px solid rgba(0,0,0,.12);
+}
 
-    .divider{
-      margin: 2.4rem 0;
-      border:none;
-      border-top: 1px dashed rgba(23,21,26,.16);
-    }
-
-    /* HERO: asymmetric layout like the ref */
-    .hero-section{
-      padding: .8rem 0 1.2rem;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      align-items:start;
-    }
-    @media (min-width: 980px){
-      .hero-grid{
-        grid-template-columns: 1.15fr .85fr;
-        gap: 2.2rem;
-      }
-    }
-
-    .hero-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      font-size:.78rem;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      padding:.18rem .75rem;
-      border-radius:999px;
-      background: rgba(46,27,58,.06);
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-    .hero-pill span{
-      width:6px;height:6px;border-radius:50%;
-      background: linear-gradient(135deg, var(--highlight), var(--accent));
-    }
-
-    .tagline{
-      font-size: 1.02rem;
-      color: rgba(23,21,26,.82);
-      margin-bottom: .85rem;
-    }
-    .highlight{
-      background: linear-gradient(120deg, rgba(255,255,255,.18), rgba(254,240,199,.72));
-      padding: .08em .18em;
-      border-radius: .35em;
-    }
-    .note{
-      font-size:.88rem;
-      color: rgba(23,21,26,.62);
-      margin-top:.35rem;
-    }
-
-    /* collage art block */
-    .hero-art-wrap{
-      position:relative;
-      border-radius: 18px;
-      overflow:hidden;
-      border: 1px solid rgba(23,21,26,.10);
-      box-shadow: 0 16px 42px rgba(10,10,12,.10);
-      transform: rotate(-.35deg);
-    }
-    .hero-art-image{
-      width:100%;
-      display:block;
-      object-fit:cover;
-      object-position:center 75%;
-      max-height: 420px;
-    }
-
-    .hero-art-hover{
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.88));
-      color: #F3EEE4;
-      opacity:0;
-      transition: opacity .25s ease-out;
-      padding: 1.15rem;
-      display:flex;
-      align-items:flex-end;
-      font-size:.86rem;
-      line-height:1.45;
-      pointer-events:none;
-    }
-    .hero-art-wrap:hover .hero-art-hover,
-    .hero-art-hover.is-visible{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .hero-art-caption{
-      font-size:.85rem;
-      color: rgba(23,21,26,.64);
-      margin:.7rem 0 0;
-      font-style:italic;
-    }
-
-    /* services cards */
-    .cards{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      margin-top: 1.2rem;
-    }
-    @media (min-width: 980px){
-      .cards{ grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
-    }
-    .card{
-      background: rgba(255,255,255,.44);
-      border: 1px solid rgba(23,21,26,.10);
-      border-radius: 18px;
-      padding: 1.1rem 1.1rem 1.15rem;
-      box-shadow: 0 10px 28px rgba(10,10,12,.06);
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-60px -60px auto auto;
-      width:140px;height:140px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(216,179,93,.35), transparent 60%);
-      transform: rotate(18deg);
-      pointer-events:none;
-    }
-    .card h3{
-      font-family: Fraunces, serif;
-      font-weight: 450;
-      margin:0 0 .5rem;
-      color: var(--accent);
-      font-size: 1.12rem;
-    }
-    .card p{
-      font-size:.96rem;
-      color: rgba(23,21,26,.82);
-      margin-bottom:.7rem;
-    }
-    .card ul{
-      margin:.2rem 0 0 1.05rem;
-      padding:0;
-      color: rgba(23,21,26,.75);
-      font-size:.94rem;
-    }
-    .card li{ margin:.22rem 0; }
-
-    /* reveal on scroll */
-    .reveal{
-      opacity:0;
-      transform: translateY(16px);
-      transition: opacity .75s ease, transform .75s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.is-in{
-      opacity:1;
-      transform: translateY(0);
-    }
-
-    /* parallax elements */
-    .parallax{
-      will-change: transform;
-      transform: translate3d(0,0,0);
-    }
-
-    .about-photo{
-      width: 240px;
-      height:auto;
-      border-radius: 18px;
-      display:block;
-      margin: 0 auto 1.8rem;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
-      border: 1px solid rgba(23,21,26,.10);
-    }
-
-    footer{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.4rem 2.5rem;
-      font-size: .9rem;
-      color: rgba(23,21,26,.62);
-    }
-    .footer-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.75rem;
-      margin-top:.55rem;
-    }
-
-    .placeholder-page{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 6.2rem 1.4rem 5rem;
-      display:none;
-    }
-    .placeholder-page .paper{ padding: 2.2rem 1.25rem 2.4rem; }
-    .placeholder-tag{
-      display:inline-block;
-      font-size:.75rem;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      padding:.2rem .7rem;
-      border-radius:999px;
-      background: rgba(216,179,93,.18);
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-  </style>
-
-  <script>
-    function showPage(pageId) {
-      document.querySelector('main').style.display = 'none';
-      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-    function showHome() {
-      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
-      document.querySelector('main').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-    function toggleHeroInfo() {
-      var overlay = document.querySelector('.hero-art-hover');
-      if (!overlay) return;
-      overlay.classList.toggle('is-visible');
-    }
-
-    // Reveal-on-scroll
-    function initReveal(){
-      const els = document.querySelectorAll('.reveal');
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) e.target.classList.add('is-in');
-        });
-      }, { threshold: 0.12 });
-      els.forEach(el => io.observe(el));
-    }
-
-    // Parallax (gentle)
-    function initParallax(){
-      const items = Array.from(document.querySelectorAll('[data-parallax]'));
-      if (!items.length) return;
-
-      function onScroll(){
-        const y = window.scrollY || window.pageYOffset;
-        items.forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.06;
-          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
-        });
-      }
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-    }
-
-    // Scroll progress
-    function initProgress(){
-      const bar = document.querySelector('.progress > i');
-      if(!bar) return;
-
-      function onScroll(){
-        const scrollTop = window.scrollY || window.pageYOffset;
-        const doc = document.documentElement;
-        const height = (doc.scrollHeight - doc.clientHeight) || 1;
-        const pct = Math.max(0, Math.min(1, scrollTop / height));
-        bar.style.height = (pct * 100).toFixed(2) + '%';
-      }
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initReveal();
-      initParallax();
-      initProgress();
-    });
-  </script>
+/* RESPONSIVE */
+@media(max-width:900px){
+  .poster-grid{grid-template-columns:1fr}
+  .poster-center{text-align:left;padding-top:.6rem}
+  .poster-collage{min-height:360px}
+}
+</style>
 </head>
 
 <body>
 
-  <div class="progress" aria-hidden="true"><i></i></div>
+<header>
+  <div class="brand">
+    <img src="niya-logo.PNG" alt="Niya logo">
+  </div>
+  <nav>
+    <a href="#">home</a>
+    <a href="#about">about</a>
+    <a href="#contact">contact</a>
+  </nav>
+</header>
 
-  <header>
-    <div class="brand" onclick="showHome()">
-      <img src="niya-logo.PNG" alt="Niya logo">
-    </div>
-    <nav>
-      <a href="#" onclick="showHome()">home</a>
-      <a href="#" onclick="showPage('aboutPage')">about</a>
-      <a href="#" onclick="showPage('contactPage')">contact</a>
-    </nav>
-  </header>
+<main>
 
-  <main>
-    <div class="paper">
+<section class="hero-poster">
 
-      <!-- HERO -->
-      <section id="home" class="hero-section">
-        <div class="hero-grid">
-
-          <!-- LEFT: type -->
-          <div class="reveal">
-            <div class="hero-pill"><span></span>A Storytelling Studio</div>
-
-            <!-- swap this headline with your new main text anytime -->
-            <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
-
-            <p class="tagline">
-              <span class="highlight">Rooted in purpose.</span>
-              Shaped by technical knowledge and data literacy.
-              Built to make your idea unforgettable.
-            </p>
-
-            <p>
-              Every idea begins as an inner world. But for a world to be understood, it has to be shared.
-              Niya works in that moment of transformation: moving that inner world from one pair of hands to another,
-              to be illuminated and exchanged.
-            </p>
-
-            <p class="note">
-              For people building things that are hard to explain, but too important to be misunderstood.
-            </p>
-          </div>
-
-          <!-- RIGHT: collage / art -->
-          <div class="reveal parallax" data-parallax="0.035">
-            <div class="hero-art-wrap" onclick="toggleHeroInfo()">
-              <img
-                src="fairytale.jpeg"
-                alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
-                class="hero-art-image"
-              >
-              <div class="hero-art-hover">
-                <div>
-                  <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
-                  This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression.
-                  The two figures exchanging a glowing world symbolizes the sharing of stories and imagination—an act of cultural resistance.
-                </div>
-              </div>
-            </div>
-            <p class="hero-art-caption">
-              <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <hr class="divider">
-
-      <!-- ABOUT -->
-      <section id="about" class="reveal">
-        <div class="chapter">
-          <div class="num">01</div>
-          <div class="label">About</div>
-        </div>
-        <h2>Rigor + resonance.</h2>
-        <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand and remember.</p>
-        <p>We look for the deeper why behind what you’re creating and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
-        <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with storytelling and writing.</p>
-        <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
-        <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
-      </section>
-
-      <hr class="divider">
-
-      <!-- SERVICES (new, more “editorial”) -->
-      <section id="services" class="reveal">
-        <div class="chapter">
-          <div class="num">02</div>
-          <div class="label">Services</div>
-        </div>
-        <h2>Ways we can work together.</h2>
-        <p>Pick a focused sprint, or build a long-term narrative system. Either way, the goal is the same: clarity that travels.</p>
-
-        <div class="cards">
-          <div class="card">
-            <h3>Narrative Sprint</h3>
-            <p>For when you need the story fast — and correct.</p>
-            <ul>
-              <li>positioning + message architecture</li>
-              <li>founder story + origin framing</li>
-              <li>deck / site narrative structure</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Technical Storytelling</h3>
-            <p>Translate systems into language people trust.</p>
-            <ul>
-              <li>product pages + explainers</li>
-              <li>whitepapers + thought pieces</li>
-              <li>complexity without dilution</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Ongoing Studio</h3>
-            <p>Consistent output with strategic continuity.</p>
-            <ul>
-              <li>monthly deliverables</li>
-              <li>content system + voice</li>
-              <li>narrative maintenance as you evolve</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <hr class="divider">
-
-      <!-- PHILOSOPHY -->
-      <section id="philosophy" class="reveal">
-        <div class="chapter">
-          <div class="num">03</div>
-          <div class="label">Philosophy</div>
-        </div>
-        <h2>Purpose becomes story. Story becomes strategy.</h2>
-
-        <p>Every idea has a pulse: the intention it was built from.</p>
-        <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
-        <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
-        <p>Niya translates complexity without diluting it.</p>
-        <p>We turn technical depth and data into clarity, clarity into insight, and insight into narrative.</p>
-      </section>
-
-      <hr class="divider">
-
-      <!-- CONTACT -->
-      <section id="contact" class="reveal">
-        <div class="chapter">
-          <div class="num">04</div>
-          <div class="label">Contact</div>
-        </div>
-        <h2>Let’s make it legible.</h2>
-        <p>If you’re building something technical, complex, or difficult to explain and you want the story to finally feel clear:</p>
-        <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- ABOUT PAGE -->
-  <div id="aboutPage" class="placeholder-page">
-    <div class="paper">
-      <div class="placeholder-tag">about</div>
-      <h1>About Niya</h1>
-
-      <img src="about.jpeg" alt="Janya portrait" class="about-photo">
-
-      <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
-
-      <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
-
-      <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
-
-      <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
-
-      <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
-    </div>
+  <div class="poster-topnav">
+    <a href="#">home</a>
+    <a href="#about">explore</a>
+    <a href="#contact">contacts</a>
+    <a href="#">journal</a>
+    <a href="#services">exhibitions</a>
   </div>
 
-  <!-- CONTACT PAGE -->
-  <div id="contactPage" class="placeholder-page">
-    <div class="paper">
-      <div class="placeholder-tag">contact</div>
-      <h1>Work with Niya</h1>
-      <p>To explore a collaboration, please reach out at:</p>
-      <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+  <div class="poster-grid">
+
+    <!-- LEFT -->
+    <div>
+      <div class="poster-kicker">Step into a world where story lives</div>
+
+      <div class="poster-h1">
+        <div>FIND</div>
+        <div>BALANCE</div>
+        <div>DISCOVER</div>
+        <div>THE</div>
+        <div>POWER</div>
+        <div>OF CREATIVE</div>
+        <div>SPACE</div>
+      </div>
+
+      <div class="poster-enter">
+        <span>ENTER</span>
+        <span>↻</span>
+      </div>
     </div>
+
+    <!-- CENTER -->
+    <div class="poster-center">
+      <div class="poster-your">YOUR</div>
+      <div class="poster-amp">&amp;</div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="poster-collage">
+      <img src="hand-illustration.png" class="collage-main">
+      <img src="vine.png" class="collage-vine">
+      <img src="eye.png" class="stamp-eye">
+      <img src="stamp-portrait.png" class="stamp-portrait">
+    </div>
+
   </div>
 
-  <footer>
-    <div>© Niya Story Studio</div>
-    <div class="footer-meta">
-      <span>New York</span>
-      <span>Purpose-driven storytelling</span>
+  <div class="poster-band">
+    <div class="band-title">ABOUT EXPE<br>—RIENCE</div>
+    <div class="band-copy">
+      <p><strong>Niya</strong> is a storytelling studio working at the intersection of narrative, data, and meaning.</p>
+      <p>Exploring how ideas become shareable worlds.</p>
     </div>
-  </footer>
+    <img src="small-stamp.png" class="band-stamp">
+  </div>
+
+  <div class="poster-bottom">
+    <img src="bottom-collage.png">
+  </div>
+
+</section>
+
+</main>
 
 </body>
 </html>
