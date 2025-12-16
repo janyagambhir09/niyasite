@@ -409,3 +409,280 @@
       padding:.2rem .7rem;
       border-radius:999px;
       background: rgba(216,179,93,.18);
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+  </style>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelector('main').style.display = 'none';
+      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
+      document.getElementById(pageId).style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+    function showHome() {
+      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
+      document.querySelector('main').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+    function toggleHeroInfo() {
+      var overlay = document.querySelector('.hero-art-hover');
+      if (!overlay) return;
+      overlay.classList.toggle('is-visible');
+    }
+
+    // Reveal-on-scroll
+    function initReveal(){
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('is-in');
+        });
+      }, { threshold: 0.12 });
+      els.forEach(el => io.observe(el));
+    }
+
+    // Parallax (gentle)
+    function initParallax(){
+      const items = Array.from(document.querySelectorAll('[data-parallax]'));
+      if (!items.length) return;
+
+      function onScroll(){
+        const y = window.scrollY || window.pageYOffset;
+        items.forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.06;
+          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+        });
+      }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+    }
+
+    // Scroll progress
+    function initProgress(){
+      const bar = document.querySelector('.progress > i');
+      if(!bar) return;
+
+      function onScroll(){
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const doc = document.documentElement;
+        const height = (doc.scrollHeight - doc.clientHeight) || 1;
+        const pct = Math.max(0, Math.min(1, scrollTop / height));
+        bar.style.height = (pct * 100).toFixed(2) + '%';
+      }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initReveal();
+      initParallax();
+      initProgress();
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="progress" aria-hidden="true"><i></i></div>
+
+  <header>
+    <div class="brand" onclick="showHome()">
+      <img src="niya-logo.PNG" alt="Niya logo">
+    </div>
+    <nav>
+      <a href="#" onclick="showHome()">home</a>
+      <a href="#" onclick="showPage('aboutPage')">about</a>
+      <a href="#" onclick="showPage('contactPage')">contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="paper">
+
+      <!-- HERO -->
+      <section id="home" class="hero-section">
+        <div class="hero-grid">
+
+          <!-- LEFT: type -->
+          <div class="reveal">
+            <div class="hero-pill"><span></span>A Storytelling Studio</div>
+
+            <!-- swap this headline with your new main text anytime -->
+            <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
+
+            <p class="tagline">
+              <span class="highlight">Rooted in purpose.</span>
+              Shaped by technical knowledge and data literacy.
+              Built to make your idea unforgettable.
+            </p>
+
+            <p>
+              Every idea begins as an inner world. But for a world to be understood, it has to be shared.
+              Niya works in that moment of transformation: moving that inner world from one pair of hands to another,
+              to be illuminated and exchanged.
+            </p>
+
+            <p class="note">
+              For people building things that are hard to explain, but too important to be misunderstood.
+            </p>
+          </div>
+
+          <!-- RIGHT: collage / art -->
+          <div class="reveal parallax" data-parallax="0.035">
+            <div class="hero-art-wrap" onclick="toggleHeroInfo()">
+              <img
+                src="fairytale.jpeg"
+                alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
+                class="hero-art-image"
+              >
+              <div class="hero-art-hover">
+                <div>
+                  <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
+                  This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression.
+                  The two figures exchanging a glowing world symbolizes the sharing of stories and imagination—an act of cultural resistance.
+                </div>
+              </div>
+            </div>
+            <p class="hero-art-caption">
+              <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ABOUT -->
+      <section id="about" class="reveal">
+        <div class="chapter">
+          <div class="num">01</div>
+          <div class="label">About</div>
+        </div>
+        <h2>Rigor + resonance.</h2>
+        <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand and remember.</p>
+        <p>We look for the deeper why behind what you’re creating and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
+        <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with storytelling and writing.</p>
+        <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
+        <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- SERVICES (new, more “editorial”) -->
+      <section id="services" class="reveal">
+        <div class="chapter">
+          <div class="num">02</div>
+          <div class="label">Services</div>
+        </div>
+        <h2>Ways we can work together.</h2>
+        <p>Pick a focused sprint, or build a long-term narrative system. Either way, the goal is the same: clarity that travels.</p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Narrative Sprint</h3>
+            <p>For when you need the story fast — and correct.</p>
+            <ul>
+              <li>positioning + message architecture</li>
+              <li>founder story + origin framing</li>
+              <li>deck / site narrative structure</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Technical Storytelling</h3>
+            <p>Translate systems into language people trust.</p>
+            <ul>
+              <li>product pages + explainers</li>
+              <li>whitepapers + thought pieces</li>
+              <li>complexity without dilution</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Ongoing Studio</h3>
+            <p>Consistent output with strategic continuity.</p>
+            <ul>
+              <li>monthly deliverables</li>
+              <li>content system + voice</li>
+              <li>narrative maintenance as you evolve</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- PHILOSOPHY -->
+      <section id="philosophy" class="reveal">
+        <div class="chapter">
+          <div class="num">03</div>
+          <div class="label">Philosophy</div>
+        </div>
+        <h2>Purpose becomes story. Story becomes strategy.</h2>
+
+        <p>Every idea has a pulse: the intention it was built from.</p>
+        <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
+        <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
+        <p>Niya translates complexity without diluting it.</p>
+        <p>We turn technical depth and data into clarity, clarity into insight, and insight into narrative.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- CONTACT -->
+      <section id="contact" class="reveal">
+        <div class="chapter">
+          <div class="num">04</div>
+          <div class="label">Contact</div>
+        </div>
+        <h2>Let’s make it legible.</h2>
+        <p>If you’re building something technical, complex, or difficult to explain and you want the story to finally feel clear:</p>
+        <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ABOUT PAGE -->
+  <div id="aboutPage" class="placeholder-page">
+    <div class="paper">
+      <div class="placeholder-tag">about</div>
+      <h1>About Niya</h1>
+
+      <img src="about.jpeg" alt="Janya portrait" class="about-photo">
+
+      <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
+
+      <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
+
+      <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
+
+      <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
+
+      <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
+    </div>
+  </div>
+
+  <!-- CONTACT PAGE -->
+  <div id="contactPage" class="placeholder-page">
+    <div class="paper">
+      <div class="placeholder-tag">contact</div>
+      <h1>Work with Niya</h1>
+      <p>To explore a collaboration, please reach out at:</p>
+      <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+    </div>
+  </div>
+
+  <footer>
+    <div>© Niya Story Studio</div>
+    <div class="footer-meta">
+      <span>New York</span>
+      <span>Purpose-driven storytelling</span>
+    </div>
+  </footer>
+
+</body>
+</html>
