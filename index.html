@@ -12,9 +12,8 @@
   <style>
     :root{
       --paper:#F2EDE2;
-      --paper2:#EFE7D8;
       --ink:#1B1916;
-      --muted:rgba(27,25,22,.62);
+      --muted:rgba(27,25,22,.6);
       --hair:rgba(27,25,22,.18);
       --max:1080px;
       --gold:#C9A44C;
@@ -27,99 +26,91 @@
       margin:0;
       font-family:"EB Garamond", serif;
       color:var(--ink);
-      background: var(--paper);
-      line-height:1.7;
+      background:var(--paper);
+      line-height:1.65;
     }
 
-    /* paper fiber grain */
+    /* paper texture */
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.28;
+      opacity:.25;
       mix-blend-mode:multiply;
       background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.70' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.33'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
       background-size:320px 320px;
-      z-index:0;
     }
 
-    /* aged vignette + warm wash */
+    /* subtle aging */
     body::after{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      z-index:0;
-      opacity:.26;
+      opacity:.22;
       background:
-        radial-gradient(circle at 20% 15%, rgba(0,0,0,.22), transparent 55%),
-        radial-gradient(circle at 85% 80%, rgba(0,0,0,.18), transparent 60%),
-        radial-gradient(circle at 55% 45%, rgba(201,164,76,.10), transparent 70%);
+        radial-gradient(circle at 20% 15%, rgba(0,0,0,.2), transparent 55%),
+        radial-gradient(circle at 85% 80%, rgba(0,0,0,.18), transparent 60%);
     }
 
-    a{ color:var(--ink); text-decoration:none; }
+    a{ color:var(--ink); }
     a:hover{ text-decoration:underline; }
 
-    /* ===== HEADER ===== */
     header{
       position:fixed;
       top:0; left:0; right:0;
-      z-index:30;
       padding:1rem 1.35rem;
       background:rgba(242,237,226,.78);
-      backdrop-filter: blur(10px);
+      backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(27,25,22,.08);
+      z-index:20;
     }
 
     .header-inner{
       max-width:var(--max);
       margin:0 auto;
       display:flex;
-      align-items:baseline;
       justify-content:space-between;
-      gap:1.2rem;
+      align-items:baseline;
+      gap:1rem;
     }
 
-    /* Placeholder logo (text only) */
+    /* Placeholder logo (text) — opens full About page */
     .logo{
       font-family:Fraunces, serif;
-      font-weight:500;
       text-transform:uppercase;
       letter-spacing:.18em;
-      font-size:.78rem;
-      line-height:1;
+      font-size:.75rem;
       cursor:pointer;
       user-select:none;
-      color:rgba(27,25,22,.9);
       display:inline-flex;
       align-items:center;
-      gap:.6rem;
+      gap:.55rem;
+      text-decoration:none;
+      color:rgba(27,25,22,.92);
     }
-
     .logo::before{
       content:"";
-      width:10px;
-      height:10px;
+      width:9px;
+      height:9px;
       border-radius:999px;
-      background: linear-gradient(135deg, rgba(201,164,76,.95), rgba(27,25,22,.75));
+      background:linear-gradient(135deg, rgba(201,164,76,.95), rgba(27,25,22,.75));
       display:inline-block;
       transform: translateY(-1px);
     }
 
-    /* Home / Reading / Contact fixed to match typographic feel */
     nav{
-      display:flex;
-      gap:1.6rem;
       font-family:Fraunces, serif;
       text-transform:uppercase;
       letter-spacing:.22em;
       font-size:.68rem;
-      color:rgba(27,25,22,.72);
+      display:flex;
+      gap:1.6rem;
     }
     nav a{
-      color:rgba(27,25,22,.72);
+      color:rgba(27,25,22,.78);
       text-decoration:none;
       position:relative;
     }
@@ -130,13 +121,12 @@
       bottom:-.35rem;
       width:0;
       height:2px;
-      background: rgba(27,25,22,.55);
+      background: rgba(27,25,22,.5);
       transition: width .18s ease;
     }
     nav a:hover::after{ width:100%; }
 
-    /* ===== LAYOUT ===== */
-    main{
+    main, .page{
       max-width:var(--max);
       margin:0 auto;
       padding:6.2rem 1.35rem 4rem;
@@ -144,27 +134,18 @@
       z-index:1;
     }
 
-    section{ margin-bottom:3rem; }
+    /* “Page” system */
+    .page{ display:none; }
+    .page.is-active{ display:block; }
+    .home{ display:none; }
+    .home.is-active{ display:block; }
 
-    /* ===== HERO ===== */
-    .poster-topnav{
-      display:flex;
-      justify-content:center;
-      gap:1.4rem;
-      padding:.35rem 0 1rem;
-      font-family:Fraunces, serif;
-      text-transform:uppercase;
-      letter-spacing:.22em;
-      font-size:.64rem;
-      color:rgba(27,25,22,.55);
-    }
-    .poster-topnav a{ color:rgba(27,25,22,.55); }
-
+    /* HERO */
     .poster-grid{
       display:grid;
-      grid-template-columns: 1.1fr 1.65fr;
-      gap:2.1rem;
-      align-items:start;
+      grid-template-columns: 1.1fr 1.6fr;
+      gap:2rem;
+      margin-bottom:2.6rem;
     }
 
     .poster-words{
@@ -172,26 +153,23 @@
       text-transform:uppercase;
       font-weight:500;
       letter-spacing:.08em;
-      line-height:.94;
-      font-size:clamp(2.25rem, 4.1vw, 3.35rem);
+      line-height:.95;
+      font-size:clamp(2.2rem, 4vw, 3.3rem);
     }
-    .poster-words div{ margin:.34em 0; }
-
-    /* Make “CARRY MEANING” read as one unit */
+    .poster-words div{ margin:.35em 0; }
     .poster-words .carry{
-      letter-spacing:.16em;   /* increases spacing but keeps it unified */
-      word-spacing:.35em;     /* makes the pair feel like a single phrase */
-      white-space:nowrap;     /* never breaks into two lines */
+      white-space:nowrap;
+      word-spacing:.35em;
+      letter-spacing:.16em;
       margin-top:.55em;
     }
 
-    /* ===== IMAGE ===== */
     .hero-art-wrap{
       position:relative;
       border:1px solid var(--hair);
-      background: rgba(255,255,255,.05);
-      box-shadow:0 22px 60px rgba(0,0,0,.24);
+      box-shadow:0 22px 60px rgba(0,0,0,.22);
       overflow:hidden;
+      cursor:pointer;
     }
 
     .hero-art-image{
@@ -205,10 +183,10 @@
     .hero-art-hover{
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.90));
+      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.9));
       color:var(--paper);
       opacity:0;
-      transition: opacity .25s ease;
+      transition:.25s;
       padding:1.2rem;
       display:flex;
       align-items:flex-end;
@@ -216,7 +194,6 @@
       line-height:1.45;
       pointer-events:none;
     }
-
     .hero-art-wrap:hover .hero-art-hover,
     .hero-art-hover.is-visible{
       opacity:1;
@@ -224,78 +201,84 @@
     }
 
     .hero-art-caption{
-      margin:.65rem 0 0;
+      margin-top:.6rem;
       font-style:italic;
       font-size:.95rem;
       color:var(--muted);
     }
 
-    /* ===== TEXT (literary) ===== */
+    /* TEXT */
     .manifesto{
-      margin-top:2.6rem;
       max-width:74ch;
       font-size:1.15rem;
-    }
-    .manifesto p{
-      margin:.75rem 0;
     }
 
     .manifesto h2{
       font-family:Fraunces, serif;
       text-transform:uppercase;
       letter-spacing:.08em;
-      font-weight:500;
       font-size:1.15rem;
-      margin:2.1rem 0 .6rem;
-      color:rgba(27,25,22,.92);
+      margin:2.2rem 0 .8rem;
     }
 
-    .bullets{
-      margin:.4rem 0 1.1rem 1.2rem;
-      padding:0;
-    }
-    .bullets li{ margin:.45rem 0; }
-
-    /* ===== PAPER TEAR ===== */
-    .paper-tear{
-      margin:3.1rem 0 3rem;
-      height:76px;
-      overflow:hidden;
-      border-top:1px solid var(--hair);
-      border-bottom:1px solid rgba(27,25,22,.08);
-    }
-    .paper-tear svg{
-      width:200%;
-      height:100%;
-      animation: drift 8s ease-in-out infinite;
-      filter: drop-shadow(0 12px 18px rgba(0,0,0,.10));
-    }
-    @keyframes drift{
-      0%{ transform:translateX(0); }
-      50%{ transform:translateX(-10%); }
-      100%{ transform:translateX(0); }
+    .manifesto p{
+      margin:1rem 0;
     }
 
-    /* ===== CONTACT ===== */
-    .contact{
-      margin-top:2.2rem;
-      font-size:1.12rem;
-      color:rgba(27,25,22,.9);
+    .about-mini{
+      margin-top:2.8rem;
+      padding-top:1.4rem;
+      border-top:1px solid rgba(27,25,22,.12);
+      max-width:74ch;
+    }
+    .about-mini h3{
+      font-family:Fraunces, serif;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.82rem;
+      margin:0 0 .55rem;
+      color:rgba(27,25,22,.78);
+    }
+    .about-mini p{
+      margin:.6rem 0;
+      color:rgba(27,25,22,.84);
+      font-size:1.05rem;
+    }
+
+    .about-page h1{
+      font-family:Fraunces, serif;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      font-weight:500;
+      font-size:1.55rem;
+      margin:0 0 1.2rem;
+    }
+
+    .about-photo{
+      width:240px;
+      height:auto;
+      border-radius:18px;
+      display:block;
+      margin:0 auto 1.8rem;
+      box-shadow:0 14px 34px rgba(0,0,0,0.12);
+      border:1px solid rgba(27,25,22,.10);
+      background: rgba(255,255,255,.08);
     }
 
     footer{
       margin-top:4rem;
       text-align:center;
       font-family:Fraunces, serif;
-      font-size:.70rem;
+      font-size:.7rem;
       letter-spacing:.22em;
       text-transform:uppercase;
       color:var(--muted);
+      position:relative;
+      z-index:1;
     }
 
-    @media (max-width: 920px){
-      .poster-grid{ grid-template-columns:1fr; gap:1.4rem; }
-      .poster-topnav{ justify-content:flex-start; flex-wrap:wrap; }
+    @media(max-width:900px){
+      .poster-grid{ grid-template-columns:1fr; }
     }
   </style>
 
@@ -306,9 +289,16 @@
       overlay.classList.toggle('is-visible');
     }
 
-    function goTop(){
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function showView(viewId){
+      document.querySelectorAll('.home, .page').forEach(el => el.classList.remove('is-active'));
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add('is-active');
+      window.scrollTo(0, 0);
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showView('homeView');
+    });
   </script>
 </head>
 
@@ -316,27 +306,20 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo" onclick="goTop()">Golden Parable</div>
+    <a class="logo" href="#" onclick="showView('aboutView'); return false;">Golden Parable</a>
     <nav>
-      <a href="#home">home</a>
-      <a href="#reading">reading</a>
-      <a href="#contact">contact</a>
+      <a href="#" onclick="showView('homeView'); return false;">home</a>
+      <a href="#" onclick="showView('narrativeView'); return false;">our narrative</a>
+      <a href="#" onclick="showView('contactView'); return false;">contact</a>
     </nav>
   </div>
 </header>
 
-<main>
-
-  <!-- HOME / HERO -->
+<!-- HOME VIEW -->
+<main id="homeView" class="home is-active">
   <section id="home">
-    <div class="poster-topnav">
-      <a href="#home">home</a>
-      <a href="#reading">reading</a>
-      <a href="#contact">contact</a>
-    </div>
-
     <div class="poster-grid">
-      <div class="poster-words" aria-label="poster words">
+      <div class="poster-words">
         <div>Define</div>
         <div>Craft</div>
         <div>Refine</div>
@@ -347,8 +330,8 @@
         <div class="hero-art-wrap" onclick="toggleHeroInfo()">
           <img
             src="fairytale.jpeg"
-            alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
             class="hero-art-image"
+            alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
           />
           <div class="hero-art-hover">
             <div>
@@ -363,153 +346,134 @@
         </div>
       </div>
     </div>
+
+    <!-- Tiny About at bottom -->
+    <div class="about-mini">
+      <h3>About</h3>
+      <p>
+        Golden Parable is a narrative studio run by Janya — a writer and poet working at the intersection of systems and language.
+        If you want the fuller background and practice, you can read the longer about.
+      </p>
+      <p>
+        <a href="#" onclick="showView('aboutView'); return false;">Read the full about →</a>
+      </p>
+    </div>
   </section>
 
-  <div class="paper-tear" aria-hidden="true">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,0 H1200 V55
-               C1120,68 1080,40 1000,56
-               C930,70 900,42 820,58
-               C750,72 710,46 640,60
-               C570,74 540,44 470,62
-               C400,80 360,48 290,64
-               C220,80 170,52 90,66
-               C40,74 20,68 0,72
-               V0 Z"
-            fill="rgba(0,0,0,0.08)"/>
-      <path d="M0,58
-               C80,72 120,44 200,60
-               C270,74 310,46 380,62
-               C450,78 490,48 560,64
-               C630,80 670,54 740,66
-               C810,78 850,52 920,64
-               C990,76 1030,54 1100,64
-               C1160,72 1180,70 1200,72
-               V120 H0 Z"
-            fill="rgba(255,255,255,0.40)"/>
-    </svg>
-  </div>
+  <footer>Golden Parable</footer>
+</main>
 
-  <!-- READING (your full text, restored) -->
-  <section id="reading" class="manifesto">
+<!-- OUR NARRATIVE VIEW (UPDATED COPY) -->
+<section id="narrativeView" class="page">
+  <div class="manifesto">
+
     <h2>What is Golden Parable trying to do?</h2>
-    <p>Golden Parable exists to help people define, craft, improve, and tailor their narratives.</p>
-    <p>We work with founders and companies to make sure the principles behind what they are building, and why, are well communicated.</p>
-    <p>This includes:</p>
-    <ul class="bullets">
-      <li>Defining the worldview a founder or company is expressing</li>
-      <li>Clarifying intention, not just content and messaging</li>
-      <li>Determining how to connect the narrative to action, so the story is lived and felt across product, culture, and brand</li>
-    </ul>
-    <p>This is not just copywriting, B2B marketing, or sales.</p>
-    <p>Constructing narratives that actually shift perception, inspire belief, and create movement.</p>
-    <p>This work matters most when what’s being built is complex, abstract, or hard to explain.</p>
+    <p>
+      Golden Parable exists to help people define, craft, improve, and tailor their narratives. We work with founders and companies to make sure the principles behind what they are building — and why — are well communicated.
+    </p>
+    <p>
+      This includes defining the worldview a founder or company is expressing, clarifying intention (not just content and messaging), and determining how to connect the narrative to action so the story is lived and felt across product, culture, and brand.
+    </p>
+    <p>
+      This is not just copywriting, B2B marketing, or sales. It is the construction of narratives that actually shift perception, inspire belief, and create movement. This work matters most when what’s being built is complex, abstract, or hard to explain.
+    </p>
 
     <h2>Anti-slop</h2>
-    <p>By slop, we mean generic, AI-flattened writing.</p>
-    <p>Language that sounds polished but says nothing.</p>
-    <p>Words assembled without thinking.</p>
-    <p>Golden Parable is intentionally anti-slop.</p>
-    <p>We believe writing is a craft.</p>
-    <p>It requires time, reading, refining, and care.</p>
-    <p>Clear language comes from clear thinking.</p>
-    <p>And clear thinking can never be automated.</p>
-
-    <h2>Narratives are not ornamental</h2>
-    <p>Most companies treat narrative as something ornamental.</p>
-    <p>Something layered on once the “real work” is done.</p>
-    <p>We don’t.</p>
-    <p>Narrative shapes how decisions are made,</p>
-    <p>how teams align,</p>
-    <p>and how ideas travel.</p>
-    <p>Sloppy language leads to sloppy thinking.</p>
-    <p>Careful writing creates coherence.</p>
+    <p>
+      By slop, we mean generic, AI-flattened writing — language that sounds polished but says nothing, words assembled without thinking.
+    </p>
+    <p>
+      Golden Parable is intentionally anti-slop. We believe writing is a craft. It requires time, reading, refining, and care. Clear language comes from clear thinking, and clear thinking can never be automated.
+    </p>
 
     <h2>Why narratives?</h2>
-    <p>Humans are social creatures.</p>
-    <p>Narratives are how information is stored and transmitted.</p>
-    <p>For early humans, stories were survival tools.</p>
-    <p>Knowledge moved through shared, communicated meaning around fires, across generations.</p>
-    <p>We are not machines.</p>
-    <p>We construct reality through patterns, interpretation, and causality.</p>
-    <p>Language doesn’t just describe the world.</p>
-    <p>It actively produces it.</p>
-    <p>Rhetoric matters.</p>
-    <p>It’s how ideas gain legitimacy.</p>
+    <p>
+      Most companies treat narrative as something ornamental, something layered on once the “real work” is done. We don’t.
+    </p>
+    <p>
+      Narrative shapes how decisions are made, how teams align, and how ideas travel. Sloppy language leads to sloppy thinking. Careful writing creates coherence.
+    </p>
+    <p>
+      Humans are social creatures. Narratives are how information is stored and transmitted. For early humans, stories were survival tools; knowledge moved through shared, communicated meaning around fires and across generations.
+    </p>
+    <p>
+      We are not machines. We construct reality through patterns, interpretation, and causality. Language doesn’t just describe the world — it actively produces it. Rhetoric matters. It’s how ideas gain legitimacy.
+    </p>
 
     <h2>Why narratives for founders and startups?</h2>
-    <p>Regardless of what you’re building,</p>
-    <p>if you don’t have a narrative, you can’t disseminate your idea.</p>
-    <p>But that’s not the full picture.</p>
-    <p>Narratives aren’t just broadcasting tools.</p>
-    <p>They’re ideation tools.</p>
-    <p>They help you clarify:</p>
-    <ul class="bullets">
-      <li>What you believe</li>
-      <li>What you’re building toward</li>
-      <li>How your team makes decisions</li>
-    </ul>
-    <p>A narrative becomes an internal and external compass.</p>
-    <p>It helps you locate the soul of what you’re building.</p>
-    <p>Companies are not just brands.</p>
-
-    <h2>About stories and storytelling</h2>
-    <p>Yes, stories matter.</p>
-    <p>Stories are how narratives move.</p>
-    <p>They are how ideas become legible, memorable, and sharable.</p>
-    <p>But Golden Parable is not focused on packaging something shiny</p>
-    <p>or retrofitting a story onto a finished product.</p>
-    <p>The real work happens before the story is told:</p>
-    <ul class="bullets">
-      <li>forming the narrative itself</li>
-      <li>refining the idea</li>
-      <li>shaping the worldview the company will eventually express</li>
-    </ul>
-    <p>Storytelling without story-craft is decoration.</p>
-    <p>We care about the slow, unglamorous work of story-crafting.</p>
+    <p>
+      Regardless of what you’re building, if you don’t have a narrative, you can’t disseminate your idea. But narratives aren’t just broadcasting tools — they’re ideation tools.
+    </p>
+    <p>
+      They help you clarify what you believe, what you’re building toward, and how your team makes decisions. A narrative becomes an internal and external compass. It helps you locate the soul of what you’re building. Companies are not just brands.
+    </p>
+    <p>
+      Stories matter because stories are how narratives move. They are how ideas become legible, memorable, and sharable. But Golden Parable is not focused on packaging something shiny or retrofitting a story onto a finished product.
+    </p>
+    <p>
+      The real work happens before the story is told: forming the narrative itself, refining the idea, and shaping the worldview the company will eventually express. Storytelling without story-craft is decoration. We care about the slow, intentional work of crafting a story.
+    </p>
 
     <h2>On making ideas and worldviews move</h2>
-    <p>In Fairy Tale Kings, the exchange is deliberate and careful.</p>
-    <p>The king doesn’t dominate or conquer; he hands the world forward.</p>
-    <p>That gesture mirrors what successful companies must do.</p>
-    <p>Consciously transmit their internal worldview so it survives beyond its original stewards.</p>
-    <p>Golden Parable exists to make that transfer possible,</p>
-    <p>capturing a company’s invisible world</p>
-    <p>and ensuring it can be carried intact</p>
-    <p>from one holder to the next.</p>
+    <p>
+      In <em>Fairy Tale Kings</em>, the exchange is deliberate and careful. The king doesn’t dominate or conquer; he hands the world forward. That gesture mirrors what successful companies must do: consciously transmit their internal worldview so it survives beyond its original stewards.
+    </p>
+    <p>
+      Golden Parable exists to make that transfer possible — capturing a company’s invisible world and ensuring it can be carried intact from one holder to the next.
+    </p>
 
     <h2>How Golden Parable approaches the work</h2>
-    <p>We don’t list products or offerings.</p>
-    <p>We focus on the craft of writing.</p>
-    <p>Reading, writing, refining, and thinking carefully about language.</p>
-    <p>On reviving respect for rhetoric.</p>
-    <p>On resisting sameness.</p>
-    <p>On refusing AI-generated filler.</p>
-    <p>Less branding.</p>
-    <p>Less comms.</p>
-    <p>More meaning.</p>
+    <p>
+      We don’t list products or offerings. We focus on the craft of writing: reading, writing, refining, and thinking carefully about language. On reviving respect for rhetoric. On resisting sameness. On refusing AI-generated filler.
+    </p>
+    <p>
+      Less branding. Less comms. More meaning.
+    </p>
 
     <h2>Who is behind Golden Parable</h2>
-    <p>I am Janya.</p>
-    <p>I am a writer and poet.</p>
-    <p>I have worked in startups and technical teams, building the systems that power an organization and the stories that help people understand them.</p>
-    <p>Golden Parable comes from that intersection.</p>
-  </section>
+    <p>
+      I am Janya — a writer and poet. I have worked in startups and technical teams, building the systems that power an organization and the stories that help people understand them. Golden Parable comes from that intersection.
+    </p>
 
-  <!-- CONTACT -->
-  <section id="contact" class="contact">
-    <h2 style="font-family:Fraunces,serif; text-transform:uppercase; letter-spacing:.08em; font-weight:500; font-size:1.15rem; margin:0 0 .6rem;">
-      Contact
-    </h2>
-    <p>To collaborate:</p>
-    <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-  </section>
+  </div>
 
-  <footer>
-    Golden Parable
-  </footer>
+  <footer>Golden Parable</footer>
+</section>
 
-</main>
+<!-- CONTACT VIEW -->
+<section id="contactView" class="page">
+  <div class="manifesto">
+    <h2>Contact</h2>
+    <p>To collaborate: <a href="mailto:hello@goldenparable.com">hello@goldenparable.com</a></p>
+  </div>
+
+  <footer>Golden Parable</footer>
+</section>
+
+<!-- FULL ABOUT PAGE VIEW -->
+<section id="aboutView" class="page about-page">
+  <div class="manifesto">
+    <h1>About Golden Parable</h1>
+
+    <img src="about.jpeg" alt="Janya portrait" class="about-photo">
+
+    <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
+
+    <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
+
+    <p>I am the Head of Data and Engineering and Chief Storyteller at NuVert, an AI education company, building both the systems that power the organization and the stories that help people understand them.</p>
+
+    <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives through Golden Parable.</p>
+
+    <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
+
+    <p style="margin-top:1.8rem;">
+      <a href="#" onclick="showView('homeView'); return false;">← back to home</a>
+    </p>
+  </div>
+
+  <footer>Golden Parable</footer>
+</section>
 
 </body>
 </html>
