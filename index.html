@@ -20,10 +20,10 @@
 
       /* night + glow */
       --accent:#1C1230;
-      --gold:#D6B25E;
-      --gold-soft:rgba(214,178,94,.35);
+      --gold:#E6C56E;
+      --gold-soft:rgba(230,197,110,.45);
 
-      --max:1080px;
+      --max:1240px;
     }
 
     *{ box-sizing:border-box; }
@@ -50,7 +50,7 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.25;
+      opacity:.22;
       mix-blend-mode:multiply;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
     }
@@ -62,7 +62,7 @@
       inset:0;
       pointer-events:none;
       background:radial-gradient(1100px 800px at 50% 35%, transparent 38%, rgba(0,0,0,.25));
-      opacity:.45;
+      opacity:.42;
     }
 
     header{
@@ -114,7 +114,7 @@
     main{
       max-width:var(--max);
       margin:0 auto;
-      padding:6.8rem 1.4rem 4rem;
+      padding:6.8rem clamp(1.2rem, 3.4vw, 3.2rem) 4rem;
       position:relative;
       z-index:1;
     }
@@ -123,20 +123,20 @@
     main::before{
       content:"";
       position:absolute;
-      inset:-60px -40px auto -40px;
-      height:620px;
+      inset:-70px -60px auto -60px;
+      height:680px;
       pointer-events:none;
       background:
-        radial-gradient(520px 380px at 68% 42%, rgba(214,178,94,.45), transparent 62%),
-        radial-gradient(620px 420px at 30% 18%, rgba(28,18,48,.16), transparent 65%);
+        radial-gradient(560px 420px at 70% 42%, rgba(230,197,110,.55), transparent 62%),
+        radial-gradient(680px 460px at 30% 18%, rgba(28,18,48,.16), transparent 65%);
       filter: blur(3px);
       z-index:-1;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns:1fr 1.2fr;
-      gap:2.2rem;
+      grid-template-columns: minmax(360px, 1fr) minmax(440px, 1.15fr);
+      gap:clamp(1.6rem, 3vw, 2.8rem);
       align-items:center;
     }
 
@@ -144,39 +144,52 @@
     .tagline{
       display:flex;
       flex-direction:column;
-      gap:.55rem;
-      font-size:clamp(2.9rem, 5.2vw, 4.2rem);
-      line-height:1.02;
-      text-transform:uppercase;
-      letter-spacing:.06em;
+      gap:.6rem;
       color:var(--accent);
     }
 
     .tagline-kicker{
-      font-size:.78rem;
+      font-size:.82rem;
       letter-spacing:.24em;
       text-transform:uppercase;
-      padding:.38rem .65rem;
+      padding:.4rem .7rem;
       border:1px solid rgba(0,0,0,.16);
       background:rgba(242,233,216,.6);
       align-self:flex-start;
     }
 
-    .tagline-byline{
+    .tagline-title{
+      font-size:clamp(2.8rem, 5.2vw, 4.2rem);
+      line-height:1.05;
+      letter-spacing:.04em;
+    }
+
+    .tagline-sub{
       font-size:1.15rem;
+      line-height:1.55;
+      max-width:46ch;
+      margin:.4rem 0 1.3rem;
+      color:var(--accent);
+    }
+
+    .tagline-sub em{
       font-style:italic;
-      text-transform:none;
-      letter-spacing:.02em;
       color:var(--gold);
-      max-width:32ch;
-      margin-bottom:1.4rem;
-      text-shadow:0 0 20px rgba(214,178,94,.35);
+      text-shadow:
+        0 0 26px rgba(230,197,110,.55),
+        0 1px 0 rgba(0,0,0,.22);
     }
 
     .tagline span{
+      display:block;
+      font-size:clamp(2.6rem, 4.8vw, 3.8rem);
+      line-height:1.02;
+      letter-spacing:.06em;
+      text-transform:uppercase;
       position:relative;
+      margin:.22em 0;
       text-shadow:
-        0 0 22px rgba(214,178,94,.22),
+        0 0 22px rgba(230,197,110,.22),
         0 1px 0 rgba(255,255,255,.35);
     }
 
@@ -203,7 +216,7 @@
       border:1px solid rgba(0,0,0,.22);
       box-shadow:0 24px 62px rgba(0,0,0,.24);
       overflow:hidden;
-      transform:translateY(10px);
+      transform:translateY(8px);
     }
 
     .hero-art-wrap::before{
@@ -216,18 +229,17 @@
       mix-blend-mode:multiply;
     }
 
-    /* glow emanating from painting */
     .hero-art-wrap::after{
       content:"";
       position:absolute;
-      inset:-18%;
+      inset:-22%;
       pointer-events:none;
       background:
         radial-gradient(
-          520px 420px at 50% 58%,
-          rgba(214,178,94,.55),
-          rgba(214,178,94,.25) 38%,
-          transparent 65%
+          560px 520px at 50% 58%,
+          rgba(230,197,110,.70),
+          rgba(230,197,110,.32) 40%,
+          transparent 70%
         );
       mix-blend-mode:screen;
       z-index:-1;
@@ -252,7 +264,7 @@
       font-size:.95rem;
       opacity:0;
       transition:.25s ease;
-      border-top:1px solid rgba(214,178,94,.28);
+      border-top:1px solid rgba(230,197,110,.34);
     }
 
     .hero-art-hover strong{
@@ -272,10 +284,10 @@
 
     /* COPY */
     .hero-copy{
-      margin-top:2.4rem;
-      max-width:72ch;
+      margin-top:2.6rem;
+      max-width:74ch;
       border-top:1px solid rgba(0,0,0,.18);
-      padding-top:1.8rem;
+      padding-top:1.9rem;
     }
 
     .hero-pill{
@@ -292,21 +304,13 @@
       line-height:.9;
       padding:.08em .12em 0 0;
       color:var(--accent);
-      text-shadow:0 0 18px rgba(214,178,94,.25);
-    }
-
-    .hero-copy strong{
-      color:var(--accent);
-    }
-
-    ul{
-      margin:.6rem 0 1.2rem 1.2rem;
+      text-shadow:0 0 18px rgba(230,197,110,.25);
     }
 
     footer{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 1.4rem 2.5rem;
+      padding:0 clamp(1.2rem, 3.4vw, 3.2rem) 2.5rem;
       font-size:.95rem;
       color:var(--muted);
     }
@@ -335,7 +339,14 @@
 
     <div class="tagline">
       <div class="tagline-kicker">Golden Parable</div>
-      <div class="tagline-byline">Crafting stories that carry meaning ✨</div>
+
+      <div class="tagline-title">
+        A studio for shaping meaning.
+      </div>
+
+      <div class="tagline-sub">
+        <em>Crafting narratives for founders, companies, and anyone with a story to carry.</em>
+      </div>
 
       <span>Define,</span>
       <span>Craft,</span>
@@ -367,13 +378,13 @@
 
     <p><strong>Constructing narratives that shift perception, inspire belief, and create movement.</strong></p>
 
-    <p>We work with founders and companies to make sure the principles behind what they are building, and why, are well articulated.</p>
+    <p>We work with founders, companies, and individuals to make sure the principles behind what they are building — and why — are clearly articulated.</p>
 
     <p><strong>This includes:</strong></p>
     <ul>
-      <li>defining the worldview a founder or company is expressing</li>
-      <li>clarifying intention, not just content and messaging</li>
-      <li>determining how to connect the narrative to action, so the story is lived and felt across product, culture, and brand</li>
+      <li>defining the worldview a person or organization is expressing</li>
+      <li>clarifying intention, not just content or messaging</li>
+      <li>connecting narrative to action across product, culture, and brand</li>
     </ul>
 
     <p>In <em>Fairy Tale of Kings</em>, meaning is passed hand to hand as a shared, glowing world.</p>
