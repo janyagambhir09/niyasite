@@ -5,549 +5,407 @@
   <title>Niya — Story Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Optional: nicer serif + clean sans (safe fallbacks if blocked) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --bg: #F8F4E8;          /* cream */
-      --bg-soft: #FCF9F0;     /* softer cream */
-      --text: #2F2E35;        /* ink */
-      --accent: #4C2A72;      /* deep purple */
-      --accent-soft: #AFA2C4; /* lavender */
-      --highlight: #E3B74B;   /* warm yellow */
+    :root{
+      /* Paper/editorial palette */
+      --paper: #F3EEE4;
+      --paper-2:#F7F2E9;
+      --ink:   #17151a;
+      --muted: rgba(23,21,26,.66);
+      --hairline: rgba(23,21,26,.14);
+
+      --accent: #2E1B3A;      /* deep plum/ink */
+      --accent-soft: #A79CB7; /* dusty lavender */
+      --highlight: #D8B35D;   /* warm gold */
+
+      --max: 1080px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    *{ box-sizing:border-box; }
 
-    body {
-      margin: 0;
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color: var(--ink);
+
+      /* paper texture + subtle gradients */
       background:
-        /* soft lavender sweep from bottom-left */
-        radial-gradient(circle at 10% 80%, rgba(189, 151, 227, 0.35), transparent 60%),
-        /* warm pink/peach sweep from bottom-center/right */
-        radial-gradient(circle at 80% 85%, rgba(238, 187, 170, 0.30), transparent 60%),
-        /* gentle warm light from top-right */
-        radial-gradient(circle at 90% 15%, rgba(239, 210, 170, 0.35), transparent 55%),
-        /* main white → cream paper gradient */
-        linear-gradient(180deg, #FFFFFF 0%, #FBF5EE 38%, #F3E2D6 100%);
-      background-blend-mode: soft-light, soft-light, normal, normal;
+        radial-gradient(circle at 12% 80%, rgba(170, 140, 210, 0.18), transparent 60%),
+        radial-gradient(circle at 86% 84%, rgba(232, 186, 168, 0.16), transparent 62%),
+        radial-gradient(circle at 90% 14%, rgba(239, 215, 170, 0.20), transparent 58%),
+        linear-gradient(180deg, #fff 0%, var(--paper-2) 36%, var(--paper) 100%);
       background-attachment: fixed;
-      min-height: 100vh;
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-                   "Segoe UI", sans-serif;
-      line-height: 1.6;
+
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      line-height:1.6;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
+    /* subtle grain overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.12;
+      mix-blend-mode:multiply;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      background-size:220px 220px;
     }
 
-    a:hover {
-      text-decoration: underline;
+    a{ color: var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    /* left scroll progress */
+    .progress{
+      position:fixed;
+      left: 18px;
+      top: 110px;
+      width: 2px;
+      height: calc(100vh - 160px);
+      background: rgba(23,21,26,.08);
+      z-index:30;
+      border-radius:999px;
+      overflow:hidden;
+      display:none;
+    }
+    .progress > i{
+      display:block;
+      width:100%;
+      height: 0%;
+      background: linear-gradient(180deg, var(--highlight), rgba(167,156,183,.95));
+      border-radius:999px;
+    }
+    @media (min-width: 980px){
+      .progress{ display:block; }
     }
 
-    /* HEADER: logo + nav floating, no bar */
-    header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 1.75rem;
-      border: none;
-      background: transparent;
-      backdrop-filter: none;
-      z-index: 20;
+    /* HEADER: floating */
+    header{
+      position: fixed;
+      top:0; left:0; right:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding: 1.05rem 1.5rem;
+      z-index: 40;
+
+      /* very light glass, still “no bar” */
+      background: rgba(247,242,233,.55);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(23,21,26,.06);
     }
 
-    .about-photo {
-      width: 220px;
-      height: auto;
-      border-radius: 16px;
-      display: block;
-      margin: 0 auto 1.8rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      cursor:pointer;
+      user-select:none;
     }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
+    .brand img{
+      height: 54px; /* smaller, more editorial */
+      width:auto;
+      display:block;
+      filter:none;
     }
-
-    .brand img {
-      height: 110px;
-      width: auto;
-      display: block;
-      position: relative;
-      z-index: 20;
-      filter: none;
-    }
-
-    .brand span {
-      font-weight: 650;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      color: var(--accent);
-    }
-
-    nav a {
-      margin-left: 1.3rem;
-      font-size: 0.9rem;
+    nav a{
+      margin-left:1.1rem;
+      font-size:.9rem;
       text-transform: lowercase;
-      position: relative;
       color: var(--accent);
+      position:relative;
+      opacity:.92;
     }
-
-    nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -0.25rem;
-      width: 0;
-      height: 2px;
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-0.28rem;
+      width:0;
+      height:2px;
       background: linear-gradient(90deg, var(--highlight), var(--accent-soft));
-      transition: width 0.2s ease-out;
+      transition: width .2s ease-out;
     }
+    nav a:hover::after{ width:100%; }
 
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    main {
-      max-width: 780px;
+    /* main wrapper */
+    main{
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 2.2rem 1.75rem 4rem;
-      position: relative;
-      background: transparent;  /* important: no inner box */
+      padding: 6.2rem 1.4rem 4rem; /* account for fixed header */
+      position:relative;
     }
 
-    section {
+    /* “paper sheet” feel around the content */
+    .paper{
+      position:relative;
+      padding: 2.2rem 1.25rem 2.4rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.16));
+      border: 1px solid rgba(23,21,26,.08);
+      box-shadow: 0 18px 60px rgba(10,10,12,.08);
+      border-radius: 18px;
+    }
+    @media (min-width: 980px){
+      .paper{ padding: 2.9rem 3rem 3.1rem; }
+    }
+
+    /* section spacing + numbered label */
+    section{
       margin-bottom: 3.1rem;
-      position: relative;
+      position:relative;
     }
 
-    .eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+    .chapter{
+      display:flex;
+      align-items:baseline;
+      gap: .9rem;
+      margin-bottom: .85rem;
+    }
+    .chapter .num{
+      font-size:.85rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
       color: var(--accent-soft);
-      margin-bottom: 0.85rem;
+      min-width: 44px;
+    }
+    .chapter .label{
+      font-size:.82rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(23,21,26,.55);
     }
 
-    h1, h2 {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-weight: 500;
-      margin: 0 0 1.1rem;
+    /* editorial serif */
+    h1,h2{
+      font-family: Fraunces, "Georgia", "Times New Roman", serif;
+      font-weight: 450;
       color: var(--accent);
-      position: relative;
+      margin:0 0 1rem;
+      line-height:1.12;
+    }
+    h1{ font-size: 2.45rem; }
+    h2{ font-size: 1.55rem; }
+
+    p{
+      margin:0 0 .85rem;
+      font-size: 1.02rem;
+      color: rgba(23,21,26,.88);
+      max-width: 70ch;
     }
 
-    h1 {
-      font-size: 2.05rem;
-    }
-
-    h2 {
-      font-size: 1.32rem;
-      margin-top: 0.4rem;
-    }
-
-    h2::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -0.3rem;
-      width: 2.5rem;
-      height: 3px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--highlight), var(--accent-soft));
-    }
-
-    p {
-      margin: 0 0 0.75rem;
-      font-size: 0.98rem;
-    }
-
-    .divider {
+    .divider{
       margin: 2.4rem 0;
-      border: none;
-      border-top: 1px dashed rgba(0,0,0,0.12);
+      border:none;
+      border-top: 1px dashed rgba(23,21,26,.16);
     }
 
-    /* HERO: no background here – it just sits on the body gradient */
-    .hero-section {
-      position: relative;
-      margin: 0 0 3.1rem;
-      padding: 5rem 0 3.3rem;
-      background: transparent;
+    /* HERO: asymmetric layout like the ref */
+    .hero-section{
+      padding: .8rem 0 1.2rem;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      align-items:start;
+    }
+    @media (min-width: 980px){
+      .hero-grid{
+        grid-template-columns: 1.15fr .85fr;
+        gap: 2.2rem;
+      }
     }
 
-    /* Hero artwork (Fairy Tale painting) */
-    .hero-art-wrap {
-      width: 100%;
-      margin: 0 0 1rem;
-      position: relative;
-      border-radius: 0 !important;
-      overflow: visible !important;
-      box-shadow: none !important;
-    }
-
-    .hero-art-image {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      object-position: center 75%; /* show more of the bottom of the painting */
-      max-height: 420px;
-    }
-
-    /* Hover overlay for context */
-    .hero-art-hover {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(15, 23, 42, 0.25),
-        rgba(15, 23, 42, 0.9)
-      );
-      color: #F8F4E8;
-      opacity: 0;
-      transition: opacity 0.25s ease-out;
-      padding: 1.2rem;
-      display: flex;
-      align-items: flex-end;
-      font-size: 0.84rem;
-      line-height: 1.5;
-      pointer-events: none;
-    }
-
-    /* show on desktop hover OR when toggled by JS */
-    .hero-art-wrap:hover .hero-art-hover,
-    .hero-art-hover.is-visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Caption under artwork */
-    .hero-art-caption {
-      font-size: 0.8rem;
-      color: rgba(38, 25, 60, 0.78);
-      margin: 0 0 1.8rem;
-      font-style: italic;
-    }
-
-    /* Hero copy directly on gradient */
-    .hero-copy {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      padding: 0.18rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(76,42,114,0.06);
+    .hero-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      padding:.18rem .75rem;
+      border-radius:999px;
+      background: rgba(46,27,58,.06);
       color: var(--accent);
-      margin-bottom: 0.9rem;
+      margin-bottom: 1rem;
     }
-
-    .hero-pill span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
+    .hero-pill span{
+      width:6px;height:6px;border-radius:50%;
       background: linear-gradient(135deg, var(--highlight), var(--accent));
     }
 
-    .tagline {
-      font-size: 1.03rem;
-      margin-bottom: 0.75rem;
+    .tagline{
+      font-size: 1.02rem;
+      color: rgba(23,21,26,.82);
+      margin-bottom: .85rem;
+    }
+    .highlight{
+      background: linear-gradient(120deg, rgba(255,255,255,.18), rgba(254,240,199,.72));
+      padding: .08em .18em;
+      border-radius: .35em;
+    }
+    .note{
+      font-size:.88rem;
+      color: rgba(23,21,26,.62);
+      margin-top:.35rem;
     }
 
-    .highlight {
-      background: linear-gradient(
-        120deg,
-        rgba(250, 250, 249, 0.22),
-        rgba(254, 240, 199, 0.7)
-      );
-      padding: 0.08em 0.18em;
-      border-radius: 0.3em;
+    /* collage art block */
+    .hero-art-wrap{
+      position:relative;
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(23,21,26,.10);
+      box-shadow: 0 16px 42px rgba(10,10,12,.10);
+      transform: rotate(-.35deg);
+    }
+    .hero-art-image{
+      width:100%;
+      display:block;
+      object-fit:cover;
+      object-position:center 75%;
+      max-height: 420px;
     }
 
-    .hero-story {
-      font-size: 0.9rem;
-      margin-bottom: 0.75rem;
-      color: rgba(34, 24, 52, 0.9);
+    .hero-art-hover{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.88));
+      color: #F3EEE4;
+      opacity:0;
+      transition: opacity .25s ease-out;
+      padding: 1.15rem;
+      display:flex;
+      align-items:flex-end;
+      font-size:.86rem;
+      line-height:1.45;
+      pointer-events:none;
+    }
+    .hero-art-wrap:hover .hero-art-hover,
+    .hero-art-hover.is-visible{
+      opacity:1;
+      pointer-events:auto;
     }
 
-    .note {
-      font-size: 0.82rem;
-      color: rgba(34, 24, 52, 0.7);
-      margin-top: 0.3rem;
+    .hero-art-caption{
+      font-size:.85rem;
+      color: rgba(23,21,26,.64);
+      margin:.7rem 0 0;
+      font-style:italic;
     }
 
-    footer {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 0 1.75rem 2.5rem;
-      font-size: 0.85rem;
-      color: rgba(0,0,0,0.6);
-      border-top: 1px solid rgba(0,0,0,0.08);
-      background: transparent;
+    /* services cards */
+    .cards{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1.2rem;
     }
-
-    .footer-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 0.5rem;
+    @media (min-width: 980px){
+      .cards{ grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
     }
-
-    .section-wrap {
-      border-left: none;
-      padding-left: 0;
+    .card{
+      background: rgba(255,255,255,.44);
+      border: 1px solid rgba(23,21,26,.10);
+      border-radius: 18px;
+      padding: 1.1rem 1.1rem 1.15rem;
+      box-shadow: 0 10px 28px rgba(10,10,12,.06);
+      position:relative;
+      overflow:hidden;
     }
-
-    .placeholder-page {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 4rem 1.75rem 5rem;
-      display: none;
-      background: transparent;
-    }
-
-    .placeholder-page h1 {
-      font-family: "Georgia", serif;
-      font-weight: 500;
-      font-size: 1.8rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .placeholder-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      padding: 0.2rem 0.7rem;
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:140px;height:140px;
       border-radius: 999px;
-      background: rgba(227,183,75,0.16);
-      color: var(--text);
-      margin-bottom: 1rem;
+      background: radial-gradient(circle at 30% 30%, rgba(216,179,93,.35), transparent 60%);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+    .card h3{
+      font-family: Fraunces, serif;
+      font-weight: 450;
+      margin:0 0 .5rem;
+      color: var(--accent);
+      font-size: 1.12rem;
+    }
+    .card p{
+      font-size:.96rem;
+      color: rgba(23,21,26,.82);
+      margin-bottom:.7rem;
+    }
+    .card ul{
+      margin:.2rem 0 0 1.05rem;
+      padding:0;
+      color: rgba(23,21,26,.75);
+      font-size:.94rem;
+    }
+    .card li{ margin:.22rem 0; }
+
+    /* reveal on scroll */
+    .reveal{
+      opacity:0;
+      transform: translateY(16px);
+      transition: opacity .75s ease, transform .75s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.is-in{
+      opacity:1;
+      transform: translateY(0);
     }
 
-    @media (min-width: 900px) {
-      header {
-        padding: 1.4rem 2.75rem;
-      }
-
-      header, main, footer, .placeholder-page {
-        padding-left: 2.75rem;
-        padding-right: 2.75rem;
-      }
-
-      h1 { font-size: 2.2rem; }
-    }
-  </style>
-
-  <script>
-    function showPage(pageId) {
-      document.querySelector('main').style.display = 'none';
-      document.querySelectorAll('.placeholder-page')
-        .forEach(p => p.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
-      window.scrollTo(0, 0);
+    /* parallax elements */
+    .parallax{
+      will-change: transform;
+      transform: translate3d(0,0,0);
     }
 
-    function showHome() {
-      document.querySelectorAll('.placeholder-page')
-        .forEach(p => p.style.display = 'none');
-      document.querySelector('main').style.display = 'block';
-      window.scrollTo(0, 0);
+    .about-photo{
+      width: 240px;
+      height:auto;
+      border-radius: 18px;
+      display:block;
+      margin: 0 auto 1.8rem;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
+      border: 1px solid rgba(23,21,26,.10);
     }
 
-    function toggleHeroInfo() {
-      var overlay = document.querySelector('.hero-art-hover');
-      if (!overlay) return;
-      overlay.classList.toggle('is-visible');
+    footer{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.4rem 2.5rem;
+      font-size: .9rem;
+      color: rgba(23,21,26,.62);
     }
-  </script>
-</head>
+    .footer-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.75rem;
+      margin-top:.55rem;
+    }
 
-<body>
-
-  <header>
-    <div class="brand" onclick="showHome()">
-      <img src="niya-logo.PNG" alt="Niya logo">
-      <!-- <span>NIYA</span> optional wordmark -->
-    </div>
-    <nav>
-      <a href="#" onclick="showHome()">home</a>
-      <a href="#" onclick="showPage('aboutPage')">about</a>
-      <a href="#" onclick="showPage('contactPage')">contact</a>
-    </nav>
-  </header>
-
-  <main>
-
-    <!-- HERO START -->
-    <section id="home" class="hero-section">
-
-      <div class="hero-art-wrap" onclick="toggleHeroInfo()">
-        <img
-          src="fairytale.jpeg"
-          alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
-          class="hero-art-image">
-
-        <div class="hero-art-hover">
-          <div>
-            <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
-            This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression. Fairytales are at the heart of Lithuanian culture, so the two figures exchanging a glowing mystical world is a symbolization of sharing stories and imagination, an act of cultural resistance.
-          </div>
-        </div>
-      </div>
-
-      <p class="hero-art-caption">
-        <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
-      </p>
-
-      <div class="hero-copy">
-        <div class="hero-pill">
-          <span></span>
-          A Storytelling Studio
-        </div>
-
-        <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
-
-        <p class="tagline">
-          <span class="highlight">Rooted in purpose.</span>
-          Shaped by technical knowledge and data literacy.
-          Built to make your idea unforgettable.
-        </p>
-
-        <p class="hero-story">
-          Every idea begins as an inner world. But for a world to be understood, it has to be shared. Niya works in that moment of transformation: moving that inner world from one pair of hands to another, to be illuminated and exchanged.
-        </p>
-
-        <p class="note">
-          For people building things that are hard to explain, but too important to be misunderstood.
-        </p>
-      </div>
-    </section>
-    <!-- HERO END -->
-
-    <hr class="divider">
-
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="section-wrap">
-        <h2>About</h2>
-
-        <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand and remember.</p>
-        <p>We look for the deeper why behind what you’re creating and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
-        <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with storytelling and writing.</p>
-
-        <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
-        <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
-      </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- SERVICES -->
-    <section id="services">
-      <div class="section-wrap">
-        <h2>Sample ways we can work together</h2>
-
-        <p><strong>Founder & origin stories</strong> — shaping the deeper “why” behind what you’re building into a shareable narrative.</p>
-        <p><strong>Pitch decks & investor narratives</strong> — tightening the story around your market, product, and vision.</p>
-        <p><strong>Technical explainers & product pages</strong> — translating complex systems and architecture into language people understand.</p>
-        <p><strong>Whitepapers & thought pieces</strong> — long-form writing with rigor and resonance.</p>
-        <p><strong>Research & data storytelling</strong> — turning analysis into stories that move decisions.</p>
-        <p><strong>Narrative audits</strong> — mapping where your story is missing, muddy, or misaligned.</p>
-      </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- PHILOSOPHY -->
-    <section id="philosophy">
-      <div class="section-wrap">
-        <h2>Philosophy</h2>
-
-        <p>Every idea has a pulse: the intention it was built from.</p>
-        <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
-        <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
-        <p>Niya translates complexity without diluting it.</p>
-
-        <p>We turn technical depth and data into clarity,</p>
-        <p>clarity into insight,</p>
-        <p>and insight into narrative.</p>
-
-        <p>This is how purpose becomes story,</p>
-        <p>and story becomes strategy.</p>
-      </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="section-wrap">
-        <h2>Contact</h2>
-        <p>If you’re building something technical, complex, or difficult to explain and you want the story to finally feel clear:</p>
-        <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ABOUT PAGE -->
-  <div id="aboutPage" class="placeholder-page">
-    <div class="placeholder-tag">about</div>
-    <h1>About Niya</h1>
-
-    <img src="about.jpeg" alt="Janya portrait" class="about-photo">
-
-    <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
-
-    <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
-
-    <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
-
-    <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
-
-    <p>
-
-    <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank">janya.netlify.app</a></p>
-  </div>
-
-  <!-- CONTACT PAGE -->
-  <div id="contactPage" class="placeholder-page">
-    <div class="placeholder-tag">contact</div>
-    <h1>Work with Niya</h1>
-    <p>To explore a collaboration, please reach out at:</p>
-    <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-  </div>
-
-  <footer>
-    <div>© Niya Story Studio</div>
-    <div class="footer-meta">
-      <span>New York</span>
-      <span>Purpose-driven storytelling</span>
-    </div>
-  </footer>
-
-</body>
-</html>
-
-
+    .placeholder-page{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 6.2rem 1.4rem 5rem;
+      display:none;
+    }
+    .placeholder-page .paper{ padding: 2.2rem 1.25rem 2.4rem; }
+    .placeholder-tag{
+      display:inline-block;
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      padding:.2rem .7rem;
+      border-radius:999px;
+      background: rgba(216,179,93,.18);
