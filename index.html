@@ -439,4 +439,121 @@
       margin-bottom:.7rem;
     }
     .card ul{
-      margin:.2rem 0 0 1
+      margin:.2rem 0 0 1.05rem;
+      padding:0;
+      color: rgba(23,21,26,.75);
+      font-size:.94rem;
+    }
+    .card li{ margin:.22rem 0; }
+
+    .reveal{
+      opacity:0;
+      transform: translateY(16px);
+      transition: opacity .75s ease, transform .75s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.is-in{ opacity:1; transform: translateY(0); }
+    .parallax{ will-change: transform; transform: translate3d(0,0,0); }
+
+    .placeholder-page{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 6.2rem 1.4rem 5rem;
+      display:none;
+      position:relative;
+      z-index:1;
+    }
+    .placeholder-page .paper{ padding: 2.2rem 1.25rem 2.4rem; }
+    .placeholder-tag{
+      display:inline-block;
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      padding:.2rem .7rem;
+      border-radius:999px;
+      background: rgba(216,179,93,.18);
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .about-photo{
+      width: 240px;
+      height:auto;
+      border-radius: 18px;
+      display:block;
+      margin: 0 auto 1.8rem;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
+      border: 1px solid rgba(23,21,26,.10);
+    }
+
+    footer{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.4rem 2.5rem;
+      font-size: .9rem;
+      color: rgba(23,21,26,.62);
+      position:relative;
+      z-index:1;
+    }
+    .footer-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.75rem;
+      margin-top:.55rem;
+    }
+
+    @media (max-width: 920px){
+      .poster-grid{ grid-template-columns: 1fr; }
+      .poster-center{ text-align:left; padding-top: .35rem; }
+      .poster-collage{ min-height: auto; }
+      .hero-art-wrap{
+        position:relative;
+        right:auto;
+        top:auto;
+        width:100%;
+        transform: rotate(.15deg);
+      }
+      .hero-art-image{ max-height: 520px; }
+    }
+  </style>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelector('main').style.display = 'none';
+      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
+      document.getElementById(pageId).style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+    function showHome() {
+      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
+      document.querySelector('main').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+    function toggleHeroInfo() {
+      var overlay = document.querySelector('.hero-art-hover');
+      if (!overlay) return;
+      overlay.classList.toggle('is-visible');
+    }
+
+    function initReveal(){
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('is-in');
+        });
+      }, { threshold: 0.12 });
+      els.forEach(el => io.observe(el));
+    }
+
+    function initParallax(){
+      const items = Array.from(document.querySelectorAll('[data-parallax]'));
+      if (!items.length) return;
+      function onScroll(){
+        const y = window.scrollY || window.pageYOffset;
+        items.forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.06;
+          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+        });
+      }
+      onScroll();
+      window.addEventListener('s
