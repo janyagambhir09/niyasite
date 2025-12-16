@@ -5,6 +5,7 @@
   <title>Niya — Story Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
@@ -16,18 +17,16 @@
       --ink:#17151a;
       --muted:rgba(23,21,26,.66);
       --hair:rgba(23,21,26,.14);
-
       --accent:#2E1B3A;
       --accentSoft:#A79CB7;
       --gold:#D8B35D;
-
       --max:1080px;
     }
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
 
-    /* PAPER BACKGROUND (NO GRADIENT) */
+    /* FULL PAGE PAPER (no gradients) */
     body{
       margin:0;
       color:var(--ink);
@@ -36,35 +35,38 @@
       background: var(--paper2);
     }
 
-    /* paper fibers + subtle age */
+    /* paper fiber grain */
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.14;
+      opacity:.16;
       mix-blend-mode:multiply;
       background-image:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
       background-size:260px 260px;
       z-index:0;
     }
+
+    /* subtle aged vignette */
     body::after{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
       z-index:0;
-      opacity:.22;
+      opacity:.20;
       background:
-        radial-gradient(circle at 20% 12%, rgba(0,0,0,.12), transparent 52%),
-        radial-gradient(circle at 85% 85%, rgba(0,0,0,.12), transparent 56%);
+        radial-gradient(circle at 20% 12%, rgba(0,0,0,.16), transparent 52%),
+        radial-gradient(circle at 85% 85%, rgba(0,0,0,.16), transparent 56%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.06), transparent 62%);
     }
 
     a{ color:var(--accent); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
-    /* scroll progress */
+    /* progress (optional but nice) */
     .progress{
       position:fixed;
       left:18px;
@@ -98,10 +100,11 @@
       padding:1.05rem 1.5rem;
       z-index:40;
 
-      background:rgba(247,242,233,.65);
+      background:rgba(243,238,228,.78);
       backdrop-filter: blur(10px);
       border-bottom:1px solid rgba(23,21,26,.06);
     }
+
     .brand{
       display:inline-flex;
       align-items:center;
@@ -114,6 +117,7 @@
       width:auto;
       display:block;
     }
+
     nav a{
       margin-left:1.1rem;
       font-size:.85rem;
@@ -143,76 +147,42 @@
       z-index:1;
     }
 
-    .paper{
-      position:relative;
-      padding: 2.2rem 1.25rem 2.4rem;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.60), rgba(255,255,255,.18));
-      border:1px solid rgba(23,21,26,.08);
-      box-shadow:0 18px 60px rgba(10,10,12,.08);
-      border-radius:18px;
-      overflow:hidden;
-    }
-    @media (min-width: 980px){
-      .paper{ padding: 2.7rem 3rem 3.1rem; }
-    }
-
     section{ margin-bottom:3.1rem; position:relative; }
 
-    h1{
-      font-family: Fraunces, serif;
-      font-weight: 450;
-      color: var(--accent);
-      margin: 0 0 1rem;
-      line-height: 1.12;
-      font-size: clamp(1.85rem, 3.6vw, 2.55rem);
+    /* Reveal + parallax */
+    .reveal{
+      opacity:0;
+      transform: translateY(16px);
+      transition: opacity .75s ease, transform .75s ease;
+      will-change: opacity, transform;
     }
+    .reveal.is-in{ opacity:1; transform: translateY(0); }
+    .parallax{ will-change: transform; transform: translate3d(0,0,0); }
 
-    p{
-      margin: 0 0 .85rem;
-      font-size: 1.02rem;
-      color: rgba(23,21,26,.88);
-      max-width: 72ch;
-    }
-
-    .divider{
-      margin: 2.4rem 0;
-      border: none;
-      border-top: 1px dashed rgba(23,21,26,.16);
-    }
-
-    /* ===== HERO POSTER (SMALLER) ===== */
+    /* HERO (poster area, no white card) */
     .hero-poster{
       position:relative;
-      padding: .85rem .95rem .85rem;    /* smaller */
-      border-radius: 18px;
-      border: 1px solid rgba(23,21,26,.10);
-      background:
-        radial-gradient(circle at 50% 18%, rgba(0,0,0,.07), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.12));
-      box-shadow: 0 16px 54px rgba(10,10,12,.10);
-      overflow:hidden;
+      padding: .9rem 0 0;
+      margin: 0 0 2.2rem;
     }
 
     .poster-topnav{
       display:flex;
       justify-content:center;
       gap: 1.25rem;
-      padding: .55rem .45rem .75rem;
+      padding: .4rem .2rem .75rem;
       font-size: .68rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: rgba(23,21,26,.62);
     }
     .poster-topnav a{ color: rgba(23,21,26,.62); }
-    .poster-topnav a:hover{ text-decoration: underline; }
 
     .poster-grid{
       display:grid;
-      grid-template-columns: 1.15fr .45fr 1.25fr; /* give collage more space */
-      gap: .9rem;
+      grid-template-columns: 1.05fr 1.55fr;
+      gap: 1.25rem;
       align-items:start;
-      padding: .15rem .35rem .55rem;
     }
 
     .poster-kicker{
@@ -223,52 +193,31 @@
       margin: .10rem 0 .65rem;
     }
 
-    /* MAKE FIND/BALANCE... SMALLER */
+    /* SMALLER poster words */
     .poster-h1{
       font-family: Fraunces, serif;
       text-transform: uppercase;
       font-weight: 450;
       letter-spacing: .03em;
-      line-height: .94;
+      line-height: .96;
       color: rgba(23,21,26,.92);
-      font-size: clamp(1.85rem, 3.6vw, 3.15rem); /* smaller than before */
+      font-size: clamp(1.65rem, 3.0vw, 2.55rem);
     }
     .poster-h1 > div{ margin: .06em 0; }
 
-    /* center “YOUR &” */
-    .poster-center{ padding-top: 1.75rem; text-align:center; }
-    .poster-your{
-      font-family: Fraunces, serif;
-      text-transform: uppercase;
-      font-size: clamp(1.35rem, 2.4vw, 2.2rem);
-      letter-spacing: .10em;
-      color: rgba(23,21,26,.88);
-    }
-    .poster-amp{
-      font-family: Fraunces, serif;
-      font-size: clamp(1.05rem, 1.8vw, 1.65rem);
-      color: rgba(23,21,26,.58);
-      margin-top: .15rem;
-    }
-
-    /* FAIRYTALE IMAGE BIGGER */
-    .poster-collage{
-      position: relative;
-      min-height: 360px; /* smaller overall hero but image feels bigger */
+    /* Fairytale image bigger */
+    .hero-art{
+      position:relative;
     }
 
     .hero-art-wrap{
-      position:absolute;
-      right:-10px;
-      top: -6px;
-      width: min(560px, 108%); /* bigger */
-      border-radius: 18px;
+      position:relative;
+      border-radius: 0; /* closer to the ref */
       overflow:hidden;
-      border: 1px solid rgba(23,21,26,.10);
-      box-shadow: 0 18px 48px rgba(10,10,12,.12);
-      transform: rotate(.25deg);
-      background: rgba(255,255,255,.12);
-      cursor: pointer;
+      border: 1px solid rgba(23,21,26,.16);
+      box-shadow: 0 18px 48px rgba(10,10,12,.18);
+      background: rgba(255,255,255,.08);
+      cursor:pointer;
     }
 
     .hero-art-image{
@@ -276,13 +225,13 @@
       display:block;
       object-fit:cover;
       object-position:center 72%;
-      max-height: 460px; /* bigger */
+      max-height: 560px;
     }
 
     .hero-art-hover{
       position:absolute;
       inset:0;
-      background: linear-gradient(180deg, rgba(15,23,42,.18), rgba(15,23,42,.88));
+      background: linear-gradient(180deg, rgba(15,23,42,.16), rgba(15,23,42,.88));
       color: #F3EEE4;
       opacity:0;
       transition: opacity .25s ease-out;
@@ -299,18 +248,17 @@
       pointer-events:auto;
     }
 
+    /* Caption directly below image */
     .hero-art-caption{
       margin: .55rem 0 0;
       font-size: .86rem;
       color: rgba(23,21,26,.64);
       font-style: italic;
-      padding-left: .6rem;
     }
 
-    /* hero copy (same content) */
+    /* Hero copy */
     .hero-copy{
-      margin-top: .85rem;
-      padding: 0 .6rem .8rem;
+      margin-top: 1.1rem;
       max-width: 72ch;
     }
     .hero-pill{
@@ -330,13 +278,23 @@
       width:6px;height:6px;border-radius:50%;
       background: linear-gradient(135deg, var(--gold), var(--accent));
     }
+
+    h1{
+      font-family: Fraunces, serif;
+      font-weight: 450;
+      color: var(--accent);
+      margin: 0 0 1rem;
+      line-height: 1.12;
+      font-size: clamp(1.85rem, 3.6vw, 2.55rem);
+    }
+
     .tagline{
       font-size: 1.02rem;
       color: rgba(23,21,26,.82);
       margin-bottom: .85rem;
     }
     .highlight{
-      background: linear-gradient(120deg, rgba(255,255,255,.18), rgba(254,240,199,.72));
+      background: rgba(216,179,93,.32);
       padding: .08em .18em;
       border-radius: .35em;
     }
@@ -346,21 +304,20 @@
       margin-top:.35rem;
     }
 
-    /* ===== Animated paper tear divider ===== */
+    /* Animated paper tear divider */
     .paper-tear{
       position: relative;
-      height: 80px;
-      margin: 1.05rem 0 1.7rem;
+      height: 78px;
+      margin: 1.1rem 0 1.9rem;
       overflow:hidden;
-      border-radius: 14px;
-      border: 1px solid rgba(23,21,26,.10);
-      background: rgba(255,255,255,.10);
+      border-top: 1px solid rgba(23,21,26,.12);
+      border-bottom: 1px solid rgba(23,21,26,.08);
     }
     .paper-tear svg{
       position:absolute;
-      left:0; top:0;
+      left:0; top:-6px;
       width: 200%;
-      height: 100%;
+      height: 110%;
       opacity: .95;
       animation: tearDrift 7s ease-in-out infinite;
       filter: drop-shadow(0 10px 16px rgba(0,0,0,.10));
@@ -371,7 +328,14 @@
       100% { transform: translateX(0%) translateY(0px); }
     }
 
-    /* ===== Headings like the reference ===== */
+    /* Dividers */
+    .divider{
+      margin: 2.4rem 0;
+      border: none;
+      border-top: 1px dashed rgba(23,21,26,.16);
+    }
+
+    /* Reference-style headings */
     .chapter{
       display:flex;
       align-items:baseline;
@@ -392,7 +356,6 @@
       color: rgba(23,21,26,.55);
     }
 
-    /* BIG uppercase “poster” section title */
     .section-title{
       font-family: Fraunces, serif;
       text-transform: uppercase;
@@ -404,10 +367,17 @@
     }
     .section-title .break{
       display:inline-block;
-      transform: translateX(10px); /* mimics the ref’s offset break */
+      transform: translateX(10px);
     }
 
-    /* services cards */
+    p{
+      margin: 0 0 .85rem;
+      font-size: 1.02rem;
+      color: rgba(23,21,26,.88);
+      max-width: 72ch;
+    }
+
+    /* Services cards (keeps your exact services text too) */
     .cards{
       display:grid;
       grid-template-columns: 1fr;
@@ -418,13 +388,14 @@
       .cards{ grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
     }
     .card{
-      background: rgba(255,255,255,.44);
+      background: rgba(255,255,255,.10); /* not a white box; just subtle lift */
       border: 1px solid rgba(23,21,26,.10);
       border-radius: 18px;
       padding: 1.1rem 1.1rem 1.15rem;
       box-shadow: 0 10px 28px rgba(10,10,12,.06);
       position:relative;
       overflow:hidden;
+      backdrop-filter: blur(2px);
     }
     .card h3{
       font-family: Fraunces, serif;
@@ -432,6 +403,8 @@
       margin:0 0 .5rem;
       color: var(--accent);
       font-size: 1.12rem;
+      text-transform: none;
+      letter-spacing: .01em;
     }
     .card p{
       font-size:.96rem;
@@ -446,15 +419,7 @@
     }
     .card li{ margin:.22rem 0; }
 
-    .reveal{
-      opacity:0;
-      transform: translateY(16px);
-      transition: opacity .75s ease, transform .75s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.is-in{ opacity:1; transform: translateY(0); }
-    .parallax{ will-change: transform; transform: translate3d(0,0,0); }
-
+    /* Placeholder pages (about/contact) */
     .placeholder-page{
       max-width: var(--max);
       margin: 0 auto;
@@ -463,7 +428,6 @@
       position:relative;
       z-index:1;
     }
-    .placeholder-page .paper{ padding: 2.2rem 1.25rem 2.4rem; }
     .placeholder-tag{
       display:inline-block;
       font-size:.75rem;
@@ -475,7 +439,6 @@
       color: var(--ink);
       margin-bottom: 1rem;
     }
-
     .about-photo{
       width: 240px;
       height:auto;
@@ -484,6 +447,7 @@
       margin: 0 auto 1.8rem;
       box-shadow: 0 14px 34px rgba(0,0,0,0.12);
       border: 1px solid rgba(23,21,26,.10);
+      background: rgba(255,255,255,.08);
     }
 
     footer{
@@ -504,16 +468,9 @@
 
     @media (max-width: 920px){
       .poster-grid{ grid-template-columns: 1fr; }
-      .poster-center{ text-align:left; padding-top: .35rem; }
-      .poster-collage{ min-height: auto; }
-      .hero-art-wrap{
-        position:relative;
-        right:auto;
-        top:auto;
-        width:100%;
-        transform: rotate(.15deg);
-      }
       .hero-art-image{ max-height: 520px; }
+      header{ padding: 1rem 1.1rem; }
+      main{ padding-left: 1.1rem; padding-right: 1.1rem; }
     }
   </style>
 
@@ -524,11 +481,14 @@
       document.getElementById(pageId).style.display = 'block';
       window.scrollTo(0, 0);
     }
+
     function showHome() {
       document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
       document.querySelector('main').style.display = 'block';
       window.scrollTo(0, 0);
     }
+
+    // tap-to-toggle overlay (keeps desktop hover too)
     function toggleHeroInfo() {
       var overlay = document.querySelector('.hero-art-hover');
       if (!overlay) return;
@@ -551,7 +511,7 @@
       function onScroll(){
         const y = window.scrollY || window.pageYOffset;
         items.forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.06;
+          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.04;
           el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
         });
       }
@@ -596,252 +556,234 @@
   </header>
 
   <main>
-    <div class="paper">
 
-      <!-- HERO -->
-      <section id="home" class="hero-poster">
+    <!-- HERO -->
+    <section id="home" class="hero-poster">
+      <div class="poster-topnav">
+        <a href="#" onclick="showHome()">home</a>
+        <a href="#about">explore</a>
+        <a href="#contact">contacts</a>
+        <a href="#philosophy">journal</a>
+        <a href="#services">exhibitions</a>
+      </div>
 
-        <div class="poster-topnav">
-          <a href="#" onclick="showHome()">home</a>
-          <a href="#about">explore</a>
-          <a href="#contact">contacts</a>
-          <a href="#philosophy">journal</a>
-          <a href="#services">exhibitions</a>
+      <div class="poster-grid">
+        <!-- LEFT poster type (smaller, no enter/button, no YOUR &) -->
+        <div class="reveal">
+          <div class="poster-kicker">Step into a world where story lives</div>
+          <div class="poster-h1">
+            <div>Find Balance</div>
+            <div>Discover</div>
+            <div>The Power</div>
+            <div>Of Creative</div>
+            <div>Space</div>
+          </div>
         </div>
 
-        <div class="poster-grid">
+        <!-- RIGHT: BIG Fairytale image + overlay + caption directly below -->
+        <div class="hero-art reveal">
+          <div class="hero-art-wrap parallax" data-parallax="0.02" onclick="toggleHeroInfo()">
+            <img
+              src="fairytale.jpeg"
+              alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
+              class="hero-art-image">
 
-          <!-- LEFT poster type (smaller, no ENTER/button) -->
-          <div class="reveal">
-            <div class="poster-kicker">Step into a world where story lives</div>
-
-            <div class="poster-h1">
-              <div>FIND</div>
-              <div>BALANCE</div>
-              <div>DISCOVER</div>
-              <div>THE POWER</div>
-              <div>OF CREATIVE</div>
-              <div>SPACE</div>
-            </div>
-          </div>
-
-          <!-- CENTER -->
-          <div class="poster-center reveal">
-            <div class="poster-your">YOUR</div>
-            <div class="poster-amp">&amp;</div>
-          </div>
-
-          <!-- RIGHT collage: bigger fairytale -->
-          <div class="poster-collage">
-            <div class="hero-art-wrap parallax" data-parallax="0.02" onclick="toggleHeroInfo()">
-              <img
-                src="fairytale.jpeg"
-                alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
-                class="hero-art-image">
-
-              <div class="hero-art-hover">
-                <div>
-                  <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
-                  This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression. Fairytales are at the heart of Lithuanian culture, so the two figures exchanging a glowing mystical world is a symbolization of sharing stories and imagination, an act of cultural resistance.
-                </div>
+            <div class="hero-art-hover">
+              <div>
+                <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
+                This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression. Fairytales are at the heart of Lithuanian culture, so the two figures exchanging a glowing mystical world is a symbolization of sharing stories and imagination, an act of cultural resistance.
               </div>
             </div>
           </div>
 
-        </div>
-
-        <p class="hero-art-caption">
-          <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
-        </p>
-
-        <!-- SAME hero copy -->
-        <div class="hero-copy reveal">
-          <div class="hero-pill"><span></span>A Storytelling Studio</div>
-
-          <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
-
-          <p class="tagline">
-            <span class="highlight">Rooted in purpose.</span>
-            Shaped by technical knowledge and data literacy.
-            Built to make your idea unforgettable.
-          </p>
-
-          <p>
-            Every idea begins as an inner world. But for a world to be understood, it has to be shared. Niya works in that moment of transformation: moving that inner world from one pair of hands to another, to be illuminated and exchanged.
-          </p>
-
-          <p class="note">
-            For people building things that are hard to explain, but too important to be misunderstood.
+          <p class="hero-art-caption">
+            <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
           </p>
         </div>
-
-      </section>
-
-      <!-- Animated paper tear divider -->
-      <div class="paper-tear" aria-hidden="true">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M0,0 H1200 V55
-                   C1120,68 1080,40 1000,56
-                   C930,70 900,42 820,58
-                   C750,72 710,46 640,60
-                   C570,74 540,44 470,62
-                   C400,80 360,48 290,64
-                   C220,80 170,52 90,66
-                   C40,74 20,68 0,72
-                   V0 Z"
-                fill="rgba(0,0,0,0.06)"/>
-          <path d="M0,58
-                   C80,72 120,44 200,60
-                   C270,74 310,46 380,62
-                   C450,78 490,48 560,64
-                   C630,80 670,54 740,66
-                   C810,78 850,52 920,64
-                   C990,76 1030,54 1100,64
-                   C1160,72 1180,70 1200,72
-                   V120 H0 Z"
-                fill="rgba(255,255,255,0.55)"/>
-        </svg>
       </div>
 
-      <!-- ABOUT -->
-      <section id="about" class="reveal">
-        <div class="chapter">
-          <div class="num">01</div>
-          <div class="label">Section</div>
-        </div>
+      <!-- SAME hero copy as before -->
+      <div class="hero-copy reveal">
+        <div class="hero-pill"><span></span>A Storytelling Studio</div>
 
-        <div class="section-title">ABOUT <span class="break">—</span><br><span class="break">NIYA</span></div>
+        <h1>Niya — Constructing narratives that transform complex ideas into stories.</h1>
 
-        <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand and remember.</p>
-        <p>We look for the deeper why behind what you’re creating and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
-        <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with storytelling and writing.</p>
+        <p class="tagline">
+          <span class="highlight">Rooted in purpose.</span>
+          Shaped by technical knowledge and data literacy.
+          Built to make your idea unforgettable.
+        </p>
 
-        <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
-        <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
-      </section>
+        <p>
+          Every idea begins as an inner world. But for a world to be understood, it has to be shared. Niya works in that moment of transformation: moving that inner world from one pair of hands to another, to be illuminated and exchanged.
+        </p>
 
-      <hr class="divider">
+        <p class="note">
+          For people building things that are hard to explain, but too important to be misunderstood.
+        </p>
+      </div>
+    </section>
 
-      <!-- SERVICES -->
-      <section id="services" class="reveal">
-        <div class="chapter">
-          <div class="num">02</div>
-          <div class="label">Section</div>
-        </div>
-
-        <div class="section-title">SERVICES <span class="break">—</span><br><span class="break">OFFERINGS</span></div>
-
-        <p style="margin-bottom:1.1rem;">Sample ways we can work together:</p>
-
-        <div class="cards">
-          <div class="card">
-            <h3>Founder &amp; origin stories</h3>
-            <p>Shaping the deeper “why” behind what you’re building into a shareable narrative.</p>
-            <ul>
-              <li>purpose + positioning</li>
-              <li>founder voice</li>
-              <li>origin framing</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Pitch decks &amp; investor narratives</h3>
-            <p>Tightening the story around your market, product, and vision.</p>
-            <ul>
-              <li>narrative arc</li>
-              <li>clarity + structure</li>
-              <li>signal over noise</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Technical explainers &amp; product pages</h3>
-            <p>Translating complex systems and architecture into language people understand.</p>
-            <ul>
-              <li>explainers</li>
-              <li>product pages</li>
-              <li>trust-building clarity</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="margin-top:1.2rem">
-          <p><strong>Whitepapers & thought pieces</strong> — long-form writing with rigor and resonance.</p>
-          <p><strong>Research & data storytelling</strong> — turning analysis into stories that move decisions.</p>
-          <p><strong>Narrative audits</strong> — mapping where your story is missing, muddy, or misaligned.</p>
-        </div>
-      </section>
-
-      <hr class="divider">
-
-      <!-- PHILOSOPHY -->
-      <section id="philosophy" class="reveal">
-        <div class="chapter">
-          <div class="num">03</div>
-          <div class="label">Section</div>
-        </div>
-
-        <div class="section-title">PHILOSOPHY <span class="break">—</span><br><span class="break">METHOD</span></div>
-
-        <p>Every idea has a pulse: the intention it was built from.</p>
-        <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
-        <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
-        <p>Niya translates complexity without diluting it.</p>
-
-        <p>We turn technical depth and data into clarity,</p>
-        <p>clarity into insight,</p>
-        <p>and insight into narrative.</p>
-
-        <p>This is how purpose becomes story,</p>
-        <p>and story becomes strategy.</p>
-      </section>
-
-      <hr class="divider">
-
-      <!-- CONTACT -->
-      <section id="contact" class="reveal">
-        <div class="chapter">
-          <div class="num">04</div>
-          <div class="label">Section</div>
-        </div>
-
-        <div class="section-title">CONTACT <span class="break">—</span><br><span class="break">WORK</span></div>
-
-        <p>If you’re building something technical, complex, or difficult to explain and you want the story to finally feel clear:</p>
-        <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-      </section>
-
+    <!-- Animated paper tear -->
+    <div class="paper-tear" aria-hidden="true">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,0 H1200 V55
+                 C1120,68 1080,40 1000,56
+                 C930,70 900,42 820,58
+                 C750,72 710,46 640,60
+                 C570,74 540,44 470,62
+                 C400,80 360,48 290,64
+                 C220,80 170,52 90,66
+                 C40,74 20,68 0,72
+                 V0 Z"
+              fill="rgba(0,0,0,0.06)"/>
+        <path d="M0,58
+                 C80,72 120,44 200,60
+                 C270,74 310,46 380,62
+                 C450,78 490,48 560,64
+                 C630,80 670,54 740,66
+                 C810,78 850,52 920,64
+                 C990,76 1030,54 1100,64
+                 C1160,72 1180,70 1200,72
+                 V120 H0 Z"
+              fill="rgba(255,255,255,0.38)"/>
+      </svg>
     </div>
+
+    <!-- ABOUT -->
+    <section id="about" class="reveal">
+      <div class="chapter">
+        <div class="num">01</div>
+        <div class="label">Section</div>
+      </div>
+
+      <div class="section-title">ABOUT <span class="break">—</span><br><span class="break">NIYA</span></div>
+
+      <p>Niya helps founders and companies turn deep, intricate ideas into narratives people actually understand and remember.</p>
+      <p>We look for the deeper why behind what you’re creating and shape the language in your pitches, whitepapers, explainers, decks, and long-form pieces.</p>
+      <p>The studio is grounded in data-driven understanding and shaped by a lifelong relationship with storytelling and writing.</p>
+
+      <p>Niya sits at that intersection: <strong>rigor + resonance, analysis + narrative, intent + clarity.</strong></p>
+      <p>This isn’t just marketing or copywriting. This is purpose-led narrative work.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- SERVICES -->
+    <section id="services" class="reveal">
+      <div class="chapter">
+        <div class="num">02</div>
+        <div class="label">Section</div>
+      </div>
+
+      <div class="section-title">SERVICES <span class="break">—</span><br><span class="break">OFFERINGS</span></div>
+
+      <p style="margin-bottom:1.1rem;">Sample ways we can work together</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Founder &amp; origin stories</h3>
+          <p>shaping the deeper “why” behind what you’re building into a shareable narrative.</p>
+          <ul>
+            <li>purpose + positioning</li>
+            <li>founder voice</li>
+            <li>origin framing</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Pitch decks &amp; investor narratives</h3>
+          <p>tightening the story around your market, product, and vision.</p>
+          <ul>
+            <li>narrative arc</li>
+            <li>clarity + structure</li>
+            <li>signal over noise</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Technical explainers &amp; product pages</h3>
+          <p>translating complex systems and architecture into language people understand.</p>
+          <ul>
+            <li>explainers</li>
+            <li>product pages</li>
+            <li>trust-building clarity</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:1.2rem">
+        <p><strong>Whitepapers & thought pieces</strong> — long-form writing with rigor and resonance.</p>
+        <p><strong>Research & data storytelling</strong> — turning analysis into stories that move decisions.</p>
+        <p><strong>Narrative audits</strong> — mapping where your story is missing, muddy, or misaligned.</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHILOSOPHY -->
+    <section id="philosophy" class="reveal">
+      <div class="chapter">
+        <div class="num">03</div>
+        <div class="label">Section</div>
+      </div>
+
+      <div class="section-title">PHILOSOPHY <span class="break">—</span><br><span class="break">METHOD</span></div>
+
+      <p>Every idea has a pulse: the intention it was built from.</p>
+      <p>Our work is to make that purpose shine and give it language strong enough to travel.</p>
+      <p>Most people can explain what they’ve built, but very few can articulate why it matters.</p>
+      <p>Niya translates complexity without diluting it.</p>
+
+      <p>We turn technical depth and data into clarity,</p>
+      <p>clarity into insight,</p>
+      <p>and insight into narrative.</p>
+
+      <p>This is how purpose becomes story,</p>
+      <p>and story becomes strategy.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- CONTACT -->
+    <section id="contact" class="reveal">
+      <div class="chapter">
+        <div class="num">04</div>
+        <div class="label">Section</div>
+      </div>
+
+      <div class="section-title">CONTACT <span class="break">—</span><br><span class="break">WORK</span></div>
+
+      <p>If you’re building something technical, complex, or difficult to explain and you want the story to finally feel clear:</p>
+      <p><a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
+    </section>
+
   </main>
 
   <!-- ABOUT PAGE -->
   <div id="aboutPage" class="placeholder-page">
-    <div class="paper">
-      <div class="placeholder-tag">about</div>
-      <h1>About Niya</h1>
+    <div class="placeholder-tag">about</div>
+    <h1>About Niya</h1>
 
-      <img src="about.jpeg" alt="Janya portrait" class="about-photo">
+    <img src="about.jpeg" alt="Janya portrait" class="about-photo">
 
-      <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
+    <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
 
-      <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
+    <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
 
-      <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
+    <p>I am the Head of Data and Engineering snd Chief Storyteller at NuVert, an AI education company, building both building the systems that power the organization and the stories that help people understand them.</p>
 
-      <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
+    <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives here at Niya.</p>
 
-      <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
-    </div>
+    <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
   </div>
 
   <!-- CONTACT PAGE -->
   <div id="contactPage" class="placeholder-page">
-    <div class="paper">
-      <div class="placeholder-tag">contact</div>
-      <h1>Work with Niya</h1>
-      <p>To explore a collaboration, please reach out at:</p>
-      <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-    </div>
+    <div class="placeholder-tag">contact</div>
+    <h1>Work with Niya</h1>
+    <p>To explore a collaboration, please reach out at:</p>
+    <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
   </div>
 
   <footer>
