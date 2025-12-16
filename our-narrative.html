@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Narrative — Golden Parable</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --paper:#F3EEE4;
+      --ink:#17151a;
+      --muted:rgba(23,21,26,.65);
+      --accent:#2E1B3A;
+      --gold:#D8B35D;
+      --max:860px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      line-height:1.65;
+    }
+
+    /* paper grain */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.14;
+      mix-blend-mode:multiply;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      background-size:260px 260px;
+      z-index:0;
+    }
+
+    header{
+      position:fixed;
+      top:0;left:0;right:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 1.5rem;
+      background:rgba(243,238,228,.8);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,0,0,.08);
+      z-index:10;
+    }
+
+    .brand img{
+      height:48px;
+      width:auto;
+      display:block;
+      cursor:pointer;
+    }
+
+    nav a{
+      margin-left:1.1rem;
+      font-size:.85rem;
+      text-transform:lowercase;
+      letter-spacing:.14em;
+      color:var(--accent);
+      text-decoration:none;
+      position:relative;
+    }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-0.25rem;
+      width:0;
+      height:2px;
+      background:linear-gradient(90deg,var(--gold),var(--accent));
+      transition:width .2s ease;
+    }
+
+    nav a:hover::after{ width:100%; }
+
+    main{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:6.5rem 1.4rem 4rem;
+      position:relative;
+      z-index:1;
+    }
+
+    h1{
+      font-family:Fraunces,serif;
+      font-weight:450;
+      font-size:clamp(2rem,3.4vw,2.6rem);
+      line-height:1.05;
+      margin:0 0 1.4rem;
+      color:var(--accent);
+    }
+
+    h2{
+      font-family:Fraunces,serif;
+      font-weight:450;
+      font-size:1.25rem;
+      margin:2.4rem 0 .7rem;
+      color:var(--accent);
+    }
+
+    p{
+      margin:0 0 1rem;
+      font-size:1.02rem;
+      color:rgba(23,21,26,.88);
+    }
+
+    .divider{
+      border:none;
+      border-top:1px dashed rgba(23,21,26,.18);
+      margin:2rem 0;
+    }
+
+    footer{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 1.4rem 2.5rem;
+      font-size:.9rem;
+      color:var(--muted);
+      position:relative;
+      z-index:1;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">
+    <img src="niya-logo.PNG" alt="Golden Parable">
+  </div>
+  <nav>
+    <a href="index.html">home</a>
+    <a href="our-narrative.html">our narrative</a>
+  </nav>
+</header>
+
+<main>
+
+  <h1>Our Narrative</h1>
+
+  <h2>What is a narrative?</h2>
+
+  <p>By narrative, we mean the underlying logic that gives ideas meaning, coherence, and direction.</p>
+
+  <p>Narrative operates at a deeper level than copy. It shapes how meaning is formed and how ideas are allowed to travel—both internally, within an organization, and externally, into the world.</p>
+
+  <p>The craft of story begins at the level of principles: what is held to be true, what is valued, and what the work ultimately answers to. From there, structure and language follow.</p>
+
+  <p>When narrative is unclear, people still speak, write, and share—but they do so inconsistently. Language shifts depending on who is speaking. Ideas are simplified in the wrong places. Meaning fractures as it moves.</p>
+
+  <hr class="divider">
+
+  <h2>Why narratives?</h2>
+
+  <p>Humans do not experience the world as isolated facts. We understand reality through patterns, interpretation, and causality. Narrative is the structure that holds those together.</p>
+
+  <p>Historically, stories were how knowledge survived—moving across time and generations without being lost. Narrative remains the primary way complex ideas are understood, remembered, and acted upon.</p>
+
+  <hr class="divider">
+
+  <h2>Storycraft beyond ornamentation</h2>
+
+  <p>Most organizations treat storytelling as something decorative—layered on once the “real work” is finished.</p>
+
+  <p>Stories do matter. They are how narratives become legible, memorable, and shareable. But Golden Parable is not focused on retrofitting stories onto completed products or ideas.</p>
+
+  <p>The work happens earlier:</p>
+  <p>forming the narrative itself,<br>
+     refining the idea,<br>
+     and shaping the worldview that will eventually be expressed.</p>
+
+  <hr class="divider">
+
+  <h2>Anti-slop</h2>
+
+  <p>By slop, we mean generic, AI-flattened language—writing that sounds polished but carries no thinking behind it.</p>
+
+  <p>Golden Parable treats writing as a craft. It requires reading, research, refinement, and judgment.</p>
+
+  <p>This work is governed by knowledge: understanding the industry, the technology, and the product deeply enough that the narrative reflects how things actually function, and not just how they are marketed.</p>
+
+  <p>Clear language comes from clear thinking.</p>
+
+  <hr class="divider">
+
+  <h2>How Golden Parable approaches the work</h2>
+
+  <p>The work is writing-led and thinking-intensive.</p>
+
+  <p>It centers on the careful construction of language rather than volume, velocity, or surface polish. The goal is coherence—between belief, language, and action.</p>
+
+  <p><strong>Less branding.<br>
+     Less comms.<br>
+     More meaning.</strong></p>
+
+  <hr class="divider">
+
+  <h2>Who is behind Golden Parable</h2>
+
+  <p>I am Janya.</p>
+
+  <p>I am a writer and poet. I have worked in technical teams, building the systems that power organizations and the stories that help people understand them.</p>
+
+  <p>Golden Parable comes from that intersection.</p>
+
+</main>
+
+<footer>
+  © Golden Parable
+</footer>
+
+</body>
+</html>
