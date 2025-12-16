@@ -14,22 +14,35 @@
     :root{
       --paper:#F2E9D8;
       --paper-dark:#E7D8BF;
+
       --ink:#1b1716;
       --muted:rgba(27,23,22,.65);
-      --accent:#2E1B3A;
+
+      /* “night + glow” accents to match the painting */
+      --accent:#1C1230;          /* deep midnight */
+      --gold:#D6B25E;            /* candle-gold */
+      --gold-soft:rgba(214,178,94,.28);
+      --night-wash:rgba(28,18,48,.10);
+
       --max:1080px;
     }
 
     *{ box-sizing:border-box; }
 
+    html{ font-size:19px; }
+    @media(max-width:900px){
+      html{ font-size:18px; }
+    }
+
     body{
       margin:0;
       font-family:"EB Garamond", Garamond, "Adobe Garamond Pro", serif;
       color:var(--ink);
-      line-height:1.55;
+      line-height:1.65;
+      font-size:1.06rem;
       background:
         radial-gradient(1200px 900px at 18% 10%, rgba(0,0,0,.08), transparent 55%),
-        radial-gradient(900px 700px at 80% 20%, rgba(46,27,58,.06), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(28,18,48,.12), transparent 60%),
         linear-gradient(180deg, var(--paper), var(--paper-dark));
     }
 
@@ -82,6 +95,23 @@
       text-transform:lowercase;
       color:var(--accent);
       text-decoration:none;
+      position:relative;
+    }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:0%;
+      height:1px;
+      background:var(--gold);
+      transition:width .22s ease;
+      opacity:.9;
+    }
+
+    nav a:hover::after{
+      width:100%;
     }
 
     main{
@@ -90,6 +120,21 @@
       padding:6.8rem 1.4rem 4rem;
       position:relative;
       z-index:1;
+    }
+
+    /* subtle “glow source” behind the hero */
+    main::before{
+      content:"";
+      position:absolute;
+      inset:-40px -20px auto -20px;
+      height:520px;
+      pointer-events:none;
+      background:
+        radial-gradient(420px 260px at 25% 28%, var(--gold-soft), transparent 60%),
+        radial-gradient(520px 360px at 68% 18%, rgba(28,18,48,.12), transparent 65%);
+      filter: blur(2px);
+      opacity:.9;
+      z-index:-1;
     }
 
     .hero-grid{
@@ -101,21 +146,80 @@
 
     /* HERO TAGLINE */
     .tagline{
-      font-size:clamp(2.4rem, 4.6vw, 3.6rem);
-      line-height:1.08;
+      font-size:clamp(2.7rem, 5vw, 4rem);
+      line-height:1.05;
       text-transform:uppercase;
-      letter-spacing:.04em;
+      letter-spacing:.05em;
+      color:var(--accent);
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
+    }
+
+    .tagline-kicker{
+      display:inline-block;
+      font-size:.78rem;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      padding:.38rem .65rem;
+      border:1px solid rgba(0,0,0,.16);
+      background:rgba(242,233,216,.6);
+      margin-bottom:.85rem;
+    }
+
+    .tagline-byline{
+      font-size:1.12rem;
+      font-style:italic;
+      margin:0 0 1.15rem;
+      max-width:26ch;
+      color:var(--gold);
+      text-transform:none;
+      letter-spacing:.02em;
+      text-shadow:
+        0 0 18px rgba(214,178,94,.22),
+        0 1px 0 rgba(0,0,0,.10);
     }
 
     .tagline span{
       display:block;
       margin:.22em 0;
+      position:relative;
+      width:fit-content;
+    }
+
+    .tagline span::after{
+      content:"";
+      position:absolute;
+      left:-.06em;
+      right:-.06em;
+      bottom:.10em;
+      height:.26em;
+      background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+      z-index:-1;
+      transform:skewX(-10deg);
     }
 
     .hero-art-wrap{
       position:relative;
-      border:1px solid rgba(0,0,0,.18);
+      border:1px solid rgba(0,0,0,.22);
       box-shadow:0 18px 48px rgba(0,0,0,.18);
+      overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-art-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(420px 260px at 55% 35%, rgba(214,178,94,.20), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.22));
+      mix-blend-mode:multiply;
+      opacity:.65;
+    }
+
+    .hero-art-wrap:hover{
+      transform:translateY(-4px);
+      box-shadow:0 24px 62px rgba(0,0,0,.24);
     }
 
     .hero-art-wrap img{
@@ -123,20 +227,25 @@
       display:block;
       max-height:560px;
       object-fit:cover;
-      filter:saturate(.9) contrast(.98);
+      filter:saturate(.92) contrast(1.02);
     }
 
     .hero-art-hover{
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg,rgba(20,20,20,.15),rgba(20,20,20,.92));
+      background:linear-gradient(180deg,rgba(20,20,20,.05),rgba(20,20,20,.92));
       color:#F2E9D8;
       padding:1.2rem;
       display:flex;
       align-items:flex-end;
-      font-size:.9rem;
+      font-size:.95rem;
       opacity:0;
       transition:.25s ease;
+      border-top:1px solid rgba(214,178,94,.28);
+    }
+
+    .hero-art-hover strong{
+      color:var(--gold);
     }
 
     .hero-art-wrap:hover .hero-art-hover{
@@ -144,7 +253,7 @@
     }
 
     .hero-art-caption{
-      font-size:.9rem;
+      font-size:.95rem;
       font-style:italic;
       margin-top:.6rem;
       color:var(--muted);
@@ -154,14 +263,28 @@
       margin-top:2rem;
       max-width:72ch;
       border-top:1px solid rgba(0,0,0,.18);
-      padding-top:1.5rem;
+      padding-top:1.7rem;
     }
 
     .hero-pill{
-      font-size:.75rem;
-      letter-spacing:.2em;
+      font-size:.82rem;
+      letter-spacing:.22em;
       text-transform:uppercase;
-      margin-bottom:.8rem;
+      margin-bottom:.9rem;
+      color:var(--accent);
+    }
+
+    .hero-copy p:first-of-type::first-letter{
+      float:left;
+      font-size:3.1rem;
+      line-height:.9;
+      padding:.08em .12em 0 0;
+      color:var(--accent);
+      text-shadow: 0 0 18px rgba(214,178,94,.18);
+    }
+
+    .hero-copy strong{
+      color:var(--accent);
     }
 
     ul{
@@ -172,7 +295,7 @@
       max-width:var(--max);
       margin:0 auto;
       padding:0 1.4rem 2.5rem;
-      font-size:.9rem;
+      font-size:.95rem;
       color:var(--muted);
       position:relative;
       z-index:1;
@@ -180,6 +303,7 @@
 
     @media(max-width:900px){
       .hero-grid{ grid-template-columns:1fr; }
+      .tagline-byline{ max-width:unset; }
     }
   </style>
 </head>
@@ -200,6 +324,9 @@
   <section class="hero-grid">
 
     <div class="tagline">
+      <div class="tagline-kicker">Golden Parable</div>
+      <div class="tagline-byline">Crafting stories that carry meaning ✨</div>
+
       <span>Define,</span>
       <span>Craft,</span>
       <span>Refine,</span>
