@@ -1,726 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Golden Parable — Story Studio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Golden Parable</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,450&family=Inter:wght@350;450;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --paper:#F3EEE4;
-      --paper2:#F7F2E9;
-      --ink:#17151a;
-      --muted:rgba(23,21,26,.66);
-      --hair:rgba(23,21,26,.14);
-      --accent:#2E1B3A;
-      --accentSoft:#A79CB7;
-      --gold:#D8B35D;
-      --max:1080px;
-    }
+<style>
+:root{
+  --paper:#F2EDE2;
+  --paper-warm:#EFE7D8;
+  --ink:#1B1916;
+  --muted:rgba(27,25,22,.6);
+  --hair:rgba(27,25,22,.18);
+  --gold:#C9A44C;
+  --max:1080px;
+}
 
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 
-    /* FULL PAGE PAPER */
-    body{
-      margin:0;
-      color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
-      line-height:1.6;
-      background: var(--paper2);
-    }
+body{
+  margin:0;
+  font-family:"EB Garamond", serif;
+  color:var(--ink);
+  background: var(--paper);
+  line-height:1.65;
+}
 
-    /* paper fiber grain */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.16;
-      mix-blend-mode:multiply;
-      background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
-      background-size:260px 260px;
-      z-index:0;
-    }
+/* paper fibers */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.28;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
 
-    /* subtle aged vignette */
-    body::after{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-      opacity:.20;
-      background:
-        radial-gradient(circle at 20% 12%, rgba(0,0,0,.16), transparent 52%),
-        radial-gradient(circle at 85% 85%, rgba(0,0,0,.16), transparent 56%),
-        radial-gradient(circle at 50% 50%, rgba(0,0,0,.06), transparent 62%);
-    }
+/* subtle aging */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(0,0,0,.18), transparent 55%),
+    radial-gradient(circle at 85% 80%, rgba(0,0,0,.18), transparent 60%);
+  opacity:.22;
+}
 
-    a{ color:var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+header{
+  position:fixed;
+  top:0;left:0;right:0;
+  padding:1rem 1.4rem;
+  display:flex;
+  justify-content:center;
+  z-index:30;
+  background:rgba(242,237,226,.75);
+  backdrop-filter:blur(8px);
+}
 
-    /* progress (optional) */
-    .progress{
-      position:fixed;
-      left:18px;
-      top:110px;
-      width:2px;
-      height:calc(100vh - 160px);
-      background:rgba(23,21,26,.08);
-      z-index:30;
-      border-radius:999px;
-      overflow:hidden;
-      display:none;
-    }
-    .progress > i{
-      display:block;
-      width:100%;
-      height:0%;
-      background:linear-gradient(180deg,var(--gold),rgba(167,156,183,.95));
-      border-radius:999px;
-    }
-    @media (min-width: 980px){
-      .progress{ display:block; }
-    }
+nav{
+  display:flex;
+  gap:1.8rem;
+  font-family:Fraunces, serif;
+  font-size:.7rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
 
-    /* HEADER */
-    header{
-      position:fixed;
-      top:0;left:0;right:0;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:1.05rem 1.5rem;
-      z-index:40;
+nav a{
+  color:var(--ink);
+  text-decoration:none;
+}
+nav a:hover{ text-decoration:underline }
 
-      background:rgba(243,238,228,.78);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid rgba(23,21,26,.06);
-    }
+main{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:6rem 1.5rem 4rem;
+}
 
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:.6rem;
-      cursor:pointer;
-      user-select:none;
-    }
-    .brand img{
-      height:54px;
-      width:auto;
-      display:block;
-    }
-    .brand-word{
-      font-family:Fraunces,serif;
-      font-weight:450;
-      font-size:1rem;
-      letter-spacing:.06em;
-      color:rgba(23,21,26,.88);
-      text-transform:uppercase;
-      display:none;
-    }
-    @media (min-width: 980px){
-      .brand-word{ display:inline-block; }
-    }
+/* HERO */
+.hero{
+  margin-bottom:2.6rem;
+}
 
-    nav a{
-      margin-left:1.1rem;
-      font-size:.85rem;
-      letter-spacing:.14em;
-      text-transform:lowercase;
-      color:var(--accent);
-      position:relative;
-      opacity:.92;
-    }
-    nav a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-0.28rem;
-      width:0;
-      height:2px;
-      background:linear-gradient(90deg,var(--gold),var(--accentSoft));
-      transition:width .2s ease-out;
-    }
-    nav a:hover::after{ width:100%; }
+.poster-grid{
+  display:grid;
+  grid-template-columns: 1.1fr 1.6fr;
+  gap:2rem;
+}
 
-    main{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:6.2rem 1.4rem 4rem;
-      position:relative;
-      z-index:1;
-    }
+.poster-words{
+  font-family:Fraunces, serif;
+  text-transform:uppercase;
+  font-weight:500;
+  letter-spacing:.08em;
+  line-height:.95;
+  font-size:clamp(2.1rem,3.8vw,3.2rem);
+}
 
-    /* Reveal + parallax */
-    .reveal{
-      opacity:0;
-      transform: translateY(16px);
-      transition: opacity .75s ease, transform .75s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.is-in{ opacity:1; transform: translateY(0); }
-    .parallax{ will-change: transform; transform: translate3d(0,0,0); }
+.poster-words div{
+  margin:.35em 0;
+}
 
-    /* HERO */
-    .hero-poster{
-      position:relative;
-      padding: .9rem 0 0;
-      margin: 0 0 2.2rem;
-    }
+.poster-words .carry{
+  letter-spacing:.18em;
+  margin-top:.6em;
+}
 
-    .poster-topnav{
-      display:flex;
-      justify-content:center;
-      gap: 1.25rem;
-      padding: .4rem .2rem .75rem;
-      font-size: .68rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(23,21,26,.62);
-    }
-    .poster-topnav a{ color: rgba(23,21,26,.62); }
+/* IMAGE */
+.hero-art-wrap{
+  position:relative;
+  border:1px solid var(--hair);
+  box-shadow:0 22px 60px rgba(0,0,0,.25);
+}
 
-    .poster-grid{
-      display:grid;
-      grid-template-columns: 1.05fr 1.55fr;
-      gap: 1.25rem;
-      align-items:start;
-    }
+.hero-art-wrap img{
+  width:100%;
+  max-height:580px;
+  object-fit:cover;
+  display:block;
+}
 
-    .poster-kicker{
-      font-size: .70rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(23,21,26,.58);
-      margin: .10rem 0 .65rem;
-    }
+.hero-art-hover{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.9));
+  color:var(--paper);
+  opacity:0;
+  transition:.25s;
+  padding:1.2rem;
+  display:flex;
+  align-items:flex-end;
+  font-size:.9rem;
+}
+.hero-art-wrap:hover .hero-art-hover{opacity:1}
 
-    /* SMALL poster words */
-    .poster-h1{
-      font-family: Fraunces, serif;
-      text-transform: uppercase;
-      font-weight: 450;
-      letter-spacing: .03em;
-      line-height: .96;
-      color: rgba(23,21,26,.92);
-      font-size: clamp(1.65rem, 3.0vw, 2.55rem);
-    }
-    .poster-h1 > div{ margin: .06em 0; }
+.hero-art-caption{
+  margin-top:.6rem;
+  font-style:italic;
+  font-size:.9rem;
+  color:var(--muted);
+}
 
-    /* Fairytale */
-    .hero-art{
-      position:relative;
-    }
-    .hero-art-wrap{
-      position:relative;
-      border-radius: 0;
-      overflow:hidden;
-      border: 1px solid rgba(23,21,26,.16);
-      box-shadow: 0 18px 48px rgba(10,10,12,.18);
-      background: rgba(255,255,255,.08);
-      cursor:pointer;
-    }
-    .hero-art-image{
-      width:100%;
-      display:block;
-      object-fit:cover;
-      object-position:center 72%;
-      max-height: 560px;
-    }
-    .hero-art-hover{
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, rgba(15,23,42,.16), rgba(15,23,42,.88));
-      color: #F3EEE4;
-      opacity:0;
-      transition: opacity .25s ease-out;
-      padding: 1.15rem;
-      display:flex;
-      align-items:flex-end;
-      font-size:.86rem;
-      line-height:1.45;
-      pointer-events:none;
-    }
-    .hero-art-wrap:hover .hero-art-hover,
-    .hero-art-hover.is-visible{
-      opacity:1;
-      pointer-events:auto;
-    }
-    .hero-art-caption{
-      margin: .55rem 0 0;
-      font-size: .86rem;
-      color: rgba(23,21,26,.64);
-      font-style: italic;
-    }
+/* MANIFESTO */
+.manifesto{
+  margin-top:2.8rem;
+  max-width:70ch;
+}
 
-    /* Main content typography */
-    .hero-copy{
-      margin-top: 1.1rem;
-      max-width: 78ch;
-    }
+.manifesto h2{
+  font-family:Fraunces, serif;
+  font-size:1.6rem;
+  margin:2.4rem 0 .8rem;
+}
 
-    .hero-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      font-size:.78rem;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      padding:.18rem .75rem;
-      border-radius:999px;
-      background: rgba(46,27,58,.06);
-      color: var(--accent);
-      margin: .1rem 0 .95rem;
-    }
-    .hero-pill span{
-      width:6px;height:6px;border-radius:50%;
-      background: linear-gradient(135deg, var(--gold), var(--accent));
-    }
+.manifesto p{
+  margin:.6rem 0;
+  font-size:1.1rem;
+}
 
-    .home-title{
-      font-family: Fraunces, serif;
-      font-weight: 450;
-      font-size: clamp(1.75rem, 3.2vw, 2.25rem);
-      line-height: 1.12;
-      color: rgba(23,21,26,.92);
-      margin: 0 0 1rem;
-    }
+/* PAPER TEAR */
+.paper-tear{
+  margin:3rem 0;
+  height:70px;
+  overflow:hidden;
+  border-top:1px solid var(--hair);
+}
+.paper-tear svg{
+  width:200%;
+  animation: drift 8s ease-in-out infinite;
+}
+@keyframes drift{
+  50%{transform:translateX(-10%)}
+}
 
-    .home-subhead{
-      font-family: Fraunces, serif;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      font-size: 1.12rem;
-      line-height: 1.05;
-      color: rgba(23,21,26,.92);
-      margin: 1.2rem 0 .55rem;
-    }
+footer{
+  margin-top:4rem;
+  text-align:center;
+  font-family:Fraunces, serif;
+  font-size:.75rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
 
-    .mini-divider{
-      border: none;
-      border-top: 1px dashed rgba(23,21,26,.18);
-      margin: 1.35rem 0;
-    }
-
-    .home-list{
-      margin: .35rem 0 1.05rem 1.15rem;
-      padding: 0;
-      color: rgba(23,21,26,.86);
-    }
-    .home-list li{ margin: .35rem 0; }
-
-    p{
-      margin: 0 0 .85rem;
-      font-size: 1.02rem;
-      color: rgba(23,21,26,.88);
-      max-width: 78ch;
-    }
-
-    .note{
-      font-size:.92rem;
-      color: rgba(23,21,26,.62);
-      margin-top:.45rem;
-    }
-
-    /* Animated paper tear */
-    .paper-tear{
-      position: relative;
-      height: 78px;
-      margin: 1.1rem 0 2.2rem;
-      overflow:hidden;
-      border-top: 1px solid rgba(23,21,26,.12);
-      border-bottom: 1px solid rgba(23,21,26,.08);
-    }
-    .paper-tear svg{
-      position:absolute;
-      left:0; top:-6px;
-      width: 200%;
-      height: 110%;
-      opacity: .95;
-      animation: tearDrift 7s ease-in-out infinite;
-      filter: drop-shadow(0 10px 16px rgba(0,0,0,.10));
-    }
-    @keyframes tearDrift{
-      0%   { transform: translateX(0%) translateY(0px); }
-      50%  { transform: translateX(-10%) translateY(1px); }
-      100% { transform: translateX(0%) translateY(0px); }
-    }
-
-    /* Placeholder pages */
-    .placeholder-page{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 6.2rem 1.4rem 5rem;
-      display:none;
-      position:relative;
-      z-index:1;
-    }
-    .placeholder-tag{
-      display:inline-block;
-      font-size:.75rem;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      padding:.2rem .7rem;
-      border-radius:999px;
-      background: rgba(216,179,93,.18);
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-    .about-photo{
-      width: 240px;
-      height:auto;
-      border-radius: 18px;
-      display:block;
-      margin: 0 auto 1.8rem;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
-      border: 1px solid rgba(23,21,26,.10);
-      background: rgba(255,255,255,.08);
-    }
-
-    footer{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.4rem 2.5rem;
-      font-size: .9rem;
-      color: rgba(23,21,26,.62);
-      position:relative;
-      z-index:1;
-    }
-    .footer-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.75rem;
-      margin-top:.55rem;
-    }
-
-    @media (max-width: 920px){
-      .poster-grid{ grid-template-columns: 1fr; }
-      .hero-art-image{ max-height: 520px; }
-      header{ padding: 1rem 1.1rem; }
-      main{ padding-left: 1.1rem; padding-right: 1.1rem; }
-      .brand-word{ display:none; }
-    }
-  </style>
-
-  <script>
-    function showPage(pageId) {
-      document.querySelector('main').style.display = 'none';
-      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    function showHome() {
-      document.querySelectorAll('.placeholder-page').forEach(p => p.style.display = 'none');
-      document.querySelector('main').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    function toggleHeroInfo() {
-      var overlay = document.querySelector('.hero-art-hover');
-      if (!overlay) return;
-      overlay.classList.toggle('is-visible');
-    }
-
-    function initReveal(){
-      const els = document.querySelectorAll('.reveal');
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) e.target.classList.add('is-in');
-        });
-      }, { threshold: 0.12 });
-      els.forEach(el => io.observe(el));
-    }
-
-    function initParallax(){
-      const items = Array.from(document.querySelectorAll('[data-parallax]'));
-      if (!items.length) return;
-      function onScroll(){
-        const y = window.scrollY || window.pageYOffset;
-        items.forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-parallax')) || 0.04;
-          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
-        });
-      }
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-    }
-
-    function initProgress(){
-      const bar = document.querySelector('.progress > i');
-      if(!bar) return;
-      function onScroll(){
-        const scrollTop = window.scrollY || window.pageYOffset;
-        const doc = document.documentElement;
-        const height = (doc.scrollHeight - doc.clientHeight) || 1;
-        const pct = Math.max(0, Math.min(1, scrollTop / height));
-        bar.style.height = (pct * 100).toFixed(2) + '%';
-      }
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initReveal();
-      initParallax();
-      initProgress();
-    });
-  </script>
+@media(max-width:900px){
+  .poster-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 
 <body>
-  <div class="progress" aria-hidden="true"><i></i></div>
 
-  <header>
-    <div class="brand" onclick="showHome()">
-      <img src="niya-logo.PNG" alt="logo">
-      <span class="brand-word">Golden Parable</span>
+<header>
+  <nav>
+    <a href="#">home</a>
+    <a href="#">reading</a>
+    <a href="#">contact</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="poster-grid">
+    <div class="poster-words">
+      <div>Define</div>
+      <div>Craft</div>
+      <div>Refine</div>
+      <div class="carry">Carry&nbsp;Meaning</div>
     </div>
-    <nav>
-      <a href="#" onclick="showHome()">home</a>
-      <a href="#" onclick="showPage('aboutPage')">about</a>
-      <a href="#" onclick="showPage('contactPage')">contact</a>
-    </nav>
-  </header>
 
-  <main>
-
-    <section id="home" class="hero-poster">
-      <div class="poster-topnav">
-        <a href="#" onclick="showHome()">home</a>
-        <a href="#reading">reading</a>
-        <a href="#contactInline">contact</a>
-      </div>
-
-      <div class="poster-grid">
-        <div class="reveal">
-          <div class="poster-kicker">Golden Parable</div>
-          <div class="poster-h1">
-            <div>Define</div>
-            <div>Craft</div>
-            <div>Refine</div>
-            <div>Carry</div>
-            <div>Meaning</div>
+    <div>
+      <div class="hero-art-wrap">
+        <img src="fairytale.jpeg" alt="Fairy Tale of Kings">
+        <div class="hero-art-hover">
+          <div>
+            <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
+            A gesture of careful transmission: a world handed forward rather than conquered.
           </div>
         </div>
-
-        <div class="hero-art reveal">
-          <div class="hero-art-wrap parallax" data-parallax="0.02" onclick="toggleHeroInfo()">
-            <img
-              src="fairytale.jpeg"
-              alt="M.K. Čiurlionis — Fairy Tale (Fairy Tale of Kings), 1909"
-              class="hero-art-image">
-            <div class="hero-art-hover">
-              <div>
-                <strong>Fairy Tale (Fairy Tale of Kings), 1909 — M.K. Čiurlionis</strong><br>
-                This painting was created to honor Lithuania’s fairytale heritage at a time when the nation’s identity was under threat from Russian aggression. Fairytales are at the heart of Lithuanian culture, so the two figures exchanging a glowing mystical world is a symbolization of sharing stories and imagination, an act of cultural resistance.
-              </div>
-            </div>
-          </div>
-
-          <p class="hero-art-caption">
-            <em>Fairy Tale (Fairy Tale of Kings)</em>, 1909 — Čiurlionis.
-          </p>
-        </div>
       </div>
-
-      <div class="hero-copy reveal">
-        <div class="hero-pill"><span></span>Golden Parable</div>
-
-        <div class="home-title">What is Golden Parable trying to do?</div>
-        <p>Golden Parable exists to help people define, craft, improve, and tailor their narratives.</p>
-        <p>We work with founders and companies to make sure the principles behind what they are building, and why, are well communicated.</p>
-
-        <p><strong>This includes:</strong></p>
-        <ul class="home-list">
-          <li>Defining the worldview a founder or company is expressing</li>
-          <li>Clarifying intention, not just content and messaging</li>
-          <li>Determining how to connect the narrative to action, so the story is lived and felt across product, culture, and brand</li>
-        </ul>
-
-        <p>This is not just copywriting, B2B marketing, or sales.</p>
-        <p><strong>Constructing narratives that actually shift perception, inspire belief, and create movement.</strong></p>
-        <p>This work matters most when what’s being built is complex, abstract, or hard to explain.</p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">Anti-slop</div>
-        <p>By slop, we mean generic, AI-flattened writing.</p>
-        <p>Language that sounds polished but says nothing.</p>
-        <p>Words assembled without thinking.</p>
-        <p><strong>Golden Parable is intentionally anti-slop.</strong></p>
-        <p>We believe writing is a craft.</p>
-        <p>It requires time, reading, refining, and care.</p>
-        <p>Clear language comes from clear thinking.</p>
-        <p><strong>And clear thinking can never be automated.</strong></p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">Narratives are not ornamental</div>
-        <p>Most companies treat narrative as something ornamental.</p>
-        <p>Something layered on once the “real work” is done.</p>
-        <p><strong>We don’t.</strong></p>
-        <p>Narrative shapes how decisions are made,</p>
-        <p>how teams align,</p>
-        <p>and how ideas travel.</p>
-        <p>Sloppy language leads to sloppy thinking.</p>
-        <p><strong>Careful writing creates coherence.</strong></p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">Why narratives?</div>
-        <p>Humans are social creatures.</p>
-        <p>Narratives are how information is stored and transmitted.</p>
-        <p>For early humans, stories were survival tools.</p>
-        <p>Knowledge moved through shared, communicated meaning around fires, across generations.</p>
-        <p>We are not machines.</p>
-        <p>We construct reality through patterns, interpretation, and causality.</p>
-        <p>Language doesn’t just describe the world.</p>
-        <p><strong>It actively produces it.</strong></p>
-        <p><strong>Rhetoric matters.</strong></p>
-        <p>It’s how ideas gain legitimacy.</p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">Why narratives for founders and startups?</div>
-        <p>Regardless of what you’re building,</p>
-        <p>if you don’t have a narrative, you can’t disseminate your idea.</p>
-        <p>But that’s not the full picture.</p>
-        <p>Narratives aren’t just broadcasting tools.</p>
-        <p><strong>They’re ideation tools.</strong></p>
-        <p>They help you clarify:</p>
-        <ul class="home-list">
-          <li>What you believe</li>
-          <li>What you’re building toward</li>
-          <li>How your team makes decisions</li>
-        </ul>
-        <p>A narrative becomes an internal and external compass.</p>
-        <p>It helps you locate the soul of what you’re building.</p>
-        <p><strong>Companies are not just brands.</strong></p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">About stories (and storytelling)</div>
-        <p>Yes, stories matter.</p>
-        <p>Stories are how narratives move.</p>
-        <p>They are how ideas become legible, memorable, and sharable.</p>
-        <p>But Golden Parable is not focused on packaging something shiny</p>
-        <p>or retrofitting a story onto a finished product.</p>
-        <p><strong>The real work happens before the story is told:</strong></p>
-        <ul class="home-list">
-          <li>forming the narrative itself</li>
-          <li>refining the idea</li>
-          <li>shaping the worldview the company will eventually express</li>
-        </ul>
-        <p>Storytelling without story-craft is decoration.</p>
-        <p><strong>We care about the slow, unglamorous work of story-crafting.</strong></p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">On making ideas and worldviews move</div>
-        <p>In <em>Fairy Tale (Fairy Tale of Kings)</em>, the exchange is deliberate and careful.</p>
-        <p>The king doesn’t dominate or conquer; he hands the world forward.</p>
-        <p>That gesture mirrors what successful companies must do.</p>
-        <p>Consciously transmit their internal worldview so it survives beyond its original stewards.</p>
-        <p>Golden Parable exists to make that transfer possible,</p>
-        <p>capturing a company’s invisible world</p>
-        <p>and ensuring it can be carried intact</p>
-        <p>from one holder to the next.</p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">How Golden Parable approaches the work</div>
-        <p>We don’t list products or offerings.</p>
-        <p>We focus on the craft of writing.</p>
-        <p>Reading, writing, refining, and thinking carefully about language.</p>
-        <p>On reviving respect for rhetoric.</p>
-        <p>On resisting sameness.</p>
-        <p>On refusing AI-generated filler.</p>
-        <p><strong>Less branding.</strong></p>
-        <p><strong>Less comms.</strong></p>
-        <p><strong>More meaning.</strong></p>
-
-        <hr class="mini-divider">
-
-        <div class="home-subhead">Who is behind Golden Parable</div>
-        <p><strong>I am Janya.</strong></p>
-        <p>I am a writer and poet.</p>
-        <p>I have worked in startups and technical teams, building the systems that power an organization and the stories that help people understand them.</p>
-        <p>Golden Parable comes from that intersection.</p>
-
-        <p id="contactInline" class="note">
-          To collaborate: <a href="mailto:hello@niya.studio">hello@niya.studio</a>
-        </p>
+      <div class="hero-art-caption">
+        Fairy Tale (Fairy Tale of Kings), 1909 — Čiurlionis
       </div>
-    </section>
-
-    <div class="paper-tear" aria-hidden="true">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M0,0 H1200 V55
-                 C1120,68 1080,40 1000,56
-                 C930,70 900,42 820,58
-                 C750,72 710,46 640,60
-                 C570,74 540,44 470,62
-                 C400,80 360,48 290,64
-                 C220,80 170,52 90,66
-                 C40,74 20,68 0,72
-                 V0 Z"
-              fill="rgba(0,0,0,0.06)"/>
-        <path d="M0,58
-                 C80,72 120,44 200,60
-                 C270,74 310,46 380,62
-                 C450,78 490,48 560,64
-                 C630,80 670,54 740,66
-                 C810,78 850,52 920,64
-                 C990,76 1030,54 1100,64
-                 C1160,72 1180,70 1200,72
-                 V120 H0 Z"
-              fill="rgba(255,255,255,0.38)"/>
-      </svg>
     </div>
-
-  </main>
-
-  <!-- ABOUT PAGE -->
-  <div id="aboutPage" class="placeholder-page">
-    <div class="placeholder-tag">about</div>
-    <h1>About Golden Parable</h1>
-
-    <img src="about.jpeg" alt="Janya portrait" class="about-photo">
-
-    <p>I’m Janya — a poet, data expert, and writer. Storytelling sits at the center of my work; it’s the thread that connects the two poles of my practice: poetry and data. Poetry moves the inner world, touching people on a visceral, emotional level. Data moves the outer world, shaping systems, decisions, and collective understanding. Together, they teach me how meaning travels — from what is lived to what is measured.</p>
-
-    <p>I hold a Bachelor's degree in Computer Science and International Relations from Tufts University, with a focus on technology, governance, and global systems. My background includes managing environmental and operational real-estate data for CBRE Investment Management’s $200B AUM portfolio, where I built and scaled large data systems used for emissions modeling, regulatory reporting, and portfolio-wide analysis.</p>
-
-    <p>I am the Head of Data and Engineering and Chief Storyteller at NuVert, an AI education company, building both the systems that power the organization and the stories that help people understand them.</p>
-
-    <p>I also write for Letterbrace, a technical literature company, and help founders and teams craft narratives through Golden Parable.</p>
-
-    <p>You can explore my creative portfolio here: <a href="https://janya.netlify.app" target="_blank" rel="noopener">janya.netlify.app</a></p>
   </div>
+</section>
 
-  <!-- CONTACT PAGE -->
-  <div id="contactPage" class="placeholder-page">
-    <div class="placeholder-tag">contact</div>
-    <h1>Work with Golden Parable</h1>
-    <p>To explore a collaboration, please reach out at:</p>
-    <p>Email: <a href="mailto:hello@niya.studio">hello@niya.studio</a></p>
-  </div>
+<section class="manifesto">
 
-  <footer>
-    <div>© Golden Parable</div>
-    <div class="footer-meta">
-      <span>New York</span>
-      <span>Purpose-driven storytelling</span>
-    </div>
-  </footer>
+  <p>Golden Parable exists to help people define, craft, improve, and carry their narratives.</p>
 
+  <p>We work with founders and companies to ensure the principles behind what they are building — and why — are made legible.</p>
+
+  <p>This includes defining the worldview being expressed, clarifying intention rather than surface messaging, and connecting narrative to action so it is lived across product, culture, and brand.</p>
+
+  <p>This is not copywriting, marketing, or sales.</p>
+
+  <p><strong>It is narrative work that shifts perception, inspires belief, and creates movement.</strong></p>
+
+  <h2>Anti-slop</h2>
+  <p>By slop, we mean generic, AI-flattened language. Writing that sounds polished but says nothing.</p>
+  <p>Golden Parable is intentionally anti-slop.</p>
+
+  <h2>Narrative is not ornamental</h2>
+  <p>Narrative shapes how decisions are made, how teams align, and how ideas travel.</p>
+  <p>Careful language creates coherence.</p>
+
+  <h2>Why narratives?</h2>
+  <p>Humans construct reality through stories. Language does not merely describe the world — it produces it.</p>
+
+  <h2>Who is behind this</h2>
+  <p>I am Janya. I am a writer and poet working at the intersection of systems and language.</p>
+
+</section>
+
+<div class="paper-tear">
+<svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+<path d="M0,60 C120,40 240,80 360,60 480,40 600,80 720,60 840,40 960,80 1080,60 1140,50 1200,60 1200,60 V120 H0 Z"
+fill="rgba(0,0,0,.08)"/>
+</svg>
+</div>
+
+<footer>
+  Golden Parable
+</footer>
+
+</main>
 </body>
 </html>
