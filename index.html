@@ -111,3 +111,148 @@
       display:block;
       margin:.22em 0;
     }
+
+    .hero-art-wrap{
+      position:relative;
+      border:1px solid rgba(0,0,0,.18);
+      box-shadow:0 18px 48px rgba(0,0,0,.18);
+    }
+
+    .hero-art-wrap img{
+      width:100%;
+      display:block;
+      max-height:560px;
+      object-fit:cover;
+      filter:saturate(.9) contrast(.98);
+    }
+
+    .hero-art-hover{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(20,20,20,.15),rgba(20,20,20,.92));
+      color:#F2E9D8;
+      padding:1.2rem;
+      display:flex;
+      align-items:flex-end;
+      font-size:.9rem;
+      opacity:0;
+      transition:.25s ease;
+    }
+
+    .hero-art-wrap:hover .hero-art-hover{
+      opacity:1;
+    }
+
+    .hero-art-caption{
+      font-size:.9rem;
+      font-style:italic;
+      margin-top:.6rem;
+      color:var(--muted);
+    }
+
+    .hero-copy{
+      margin-top:2rem;
+      max-width:72ch;
+      border-top:1px solid rgba(0,0,0,.18);
+      padding-top:1.5rem;
+    }
+
+    .hero-pill{
+      font-size:.75rem;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      margin-bottom:.8rem;
+    }
+
+    ul{
+      margin:.6rem 0 1.2rem 1.2rem;
+    }
+
+    footer{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 1.4rem 2.5rem;
+      font-size:.9rem;
+      color:var(--muted);
+      position:relative;
+      z-index:1;
+    }
+
+    @media(max-width:900px){
+      .hero-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="brand-title">Golden Parable</a>
+  <nav>
+    <a href="index.html">home</a>
+    <a href="about.html">about</a>
+    <a href="our-narrative.html">our narrative</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero-grid">
+
+    <div class="tagline">
+      <span>Define,</span>
+      <span>Craft,</span>
+      <span>Refine,</span>
+      <span>Carry Meaning</span>
+    </div>
+
+    <div>
+      <div class="hero-art-wrap">
+        <img src="fairytale.jpeg" alt="Fairy Tale of Kings">
+        <div class="hero-art-hover">
+          <div>
+            <strong>Fairy Tale of Kings — M.K. Čiurlionis (1909)</strong><br>
+            Two figures hold a glowing world between them — a quiet exchange of meaning.
+          </div>
+        </div>
+      </div>
+      <div class="hero-art-caption">
+        <em>Fairy Tale of Kings</em>, 1909 — Čiurlionis
+      </div>
+    </div>
+
+  </section>
+
+  <section class="hero-copy">
+    <div class="hero-pill">Golden Parable</div>
+
+    <p>Golden Parable exists to help people define, craft, improve, and tailor their stories.</p>
+
+    <p><strong>Constructing narratives that shift perception, inspire belief, and create movement.</strong></p>
+
+    <p>We work with founders and companies to make sure the principles behind what they are building, and why, are well articulated.</p>
+
+    <p><strong>This includes:</strong></p>
+    <ul>
+      <li>defining the worldview a founder or company is expressing</li>
+      <li>clarifying intention, not just content and messaging</li>
+      <li>determining how to connect the narrative to action, so the story is lived and felt across product, culture, and brand</li>
+    </ul>
+
+    <p>In <em>Fairy Tale of Kings</em>, meaning is passed hand to hand as a shared, glowing world.</p>
+
+    <p><strong>Golden Parable works in that same moment—</strong><br>
+      when an internal world becomes visible,<br>
+      understood,<br>
+      and able to be shared.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © Golden Parable
+</footer>
+
+</body>
+</html>
