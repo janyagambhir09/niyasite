@@ -18,11 +18,10 @@
       --ink:#1b1716;
       --muted:rgba(27,23,22,.65);
 
-      /* “night + glow” accents to match the painting */
-      --accent:#1C1230;          /* deep midnight */
-      --gold:#D6B25E;            /* candle-gold */
-      --gold-soft:rgba(214,178,94,.28);
-      --night-wash:rgba(28,18,48,.10);
+      /* night + glow */
+      --accent:#1C1230;
+      --gold:#D6B25E;
+      --gold-soft:rgba(214,178,94,.35);
 
       --max:1080px;
     }
@@ -36,13 +35,12 @@
 
     body{
       margin:0;
-      font-family:"EB Garamond", Garamond, "Adobe Garamond Pro", serif;
+      font-family:"EB Garamond", Garamond, serif;
       color:var(--ink);
       line-height:1.65;
-      font-size:1.06rem;
       background:
         radial-gradient(1200px 900px at 18% 10%, rgba(0,0,0,.08), transparent 55%),
-        radial-gradient(900px 700px at 80% 20%, rgba(28,18,48,.12), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(28,18,48,.14), transparent 60%),
         linear-gradient(180deg, var(--paper), var(--paper-dark));
     }
 
@@ -57,7 +55,7 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
     }
 
-    /* darkened edges */
+    /* vignette */
     body::after{
       content:"";
       position:fixed;
@@ -107,7 +105,6 @@
       height:1px;
       background:var(--gold);
       transition:width .22s ease;
-      opacity:.9;
     }
 
     nav a:hover::after{
@@ -122,87 +119,91 @@
       z-index:1;
     }
 
-    /* subtle “glow source” behind the hero */
+    /* directional glow toward painting */
     main::before{
       content:"";
       position:absolute;
-      inset:-40px -20px auto -20px;
-      height:520px;
+      inset:-60px -40px auto -40px;
+      height:620px;
       pointer-events:none;
       background:
-        radial-gradient(420px 260px at 25% 28%, var(--gold-soft), transparent 60%),
-        radial-gradient(520px 360px at 68% 18%, rgba(28,18,48,.12), transparent 65%);
-      filter: blur(2px);
-      opacity:.9;
+        radial-gradient(520px 380px at 68% 42%, rgba(214,178,94,.45), transparent 62%),
+        radial-gradient(620px 420px at 30% 18%, rgba(28,18,48,.16), transparent 65%);
+      filter: blur(3px);
       z-index:-1;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns:1.1fr 1.4fr;
-      gap:1.6rem;
-      align-items:start;
+      grid-template-columns:1fr 1.2fr;
+      gap:2.2rem;
+      align-items:center;
     }
 
-    /* HERO TAGLINE */
+    /* LEFT COLUMN */
     .tagline{
-      font-size:clamp(2.7rem, 5vw, 4rem);
-      line-height:1.05;
+      display:flex;
+      flex-direction:column;
+      gap:.55rem;
+      font-size:clamp(2.9rem, 5.2vw, 4.2rem);
+      line-height:1.02;
       text-transform:uppercase;
-      letter-spacing:.05em;
+      letter-spacing:.06em;
       color:var(--accent);
-      text-shadow: 0 1px 0 rgba(255,255,255,.35);
     }
 
     .tagline-kicker{
-      display:inline-block;
       font-size:.78rem;
       letter-spacing:.24em;
       text-transform:uppercase;
       padding:.38rem .65rem;
       border:1px solid rgba(0,0,0,.16);
       background:rgba(242,233,216,.6);
-      margin-bottom:.85rem;
+      align-self:flex-start;
     }
 
     .tagline-byline{
-      font-size:1.12rem;
+      font-size:1.15rem;
       font-style:italic;
-      margin:0 0 1.15rem;
-      max-width:26ch;
-      color:var(--gold);
       text-transform:none;
       letter-spacing:.02em;
-      text-shadow:
-        0 0 18px rgba(214,178,94,.22),
-        0 1px 0 rgba(0,0,0,.10);
+      color:var(--gold);
+      max-width:32ch;
+      margin-bottom:1.4rem;
+      text-shadow:0 0 20px rgba(214,178,94,.35);
     }
 
     .tagline span{
-      display:block;
-      margin:.22em 0;
       position:relative;
-      width:fit-content;
+      text-shadow:
+        0 0 22px rgba(214,178,94,.22),
+        0 1px 0 rgba(255,255,255,.35);
     }
 
     .tagline span::after{
       content:"";
       position:absolute;
-      left:-.06em;
-      right:-.06em;
-      bottom:.10em;
-      height:.26em;
-      background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+      left:-.08em;
+      right:-.08em;
+      bottom:.08em;
+      height:.28em;
+      background:linear-gradient(
+        90deg,
+        transparent,
+        var(--gold-soft),
+        transparent
+      );
       z-index:-1;
-      transform:skewX(-10deg);
+      transform:skewX(-12deg);
     }
 
+    /* RIGHT COLUMN IMAGE */
     .hero-art-wrap{
       position:relative;
       border:1px solid rgba(0,0,0,.22);
-      box-shadow:0 18px 48px rgba(0,0,0,.18);
+      box-shadow:0 24px 62px rgba(0,0,0,.24);
       overflow:hidden;
-      transition:transform .25s ease, box-shadow .25s ease;
+      transform:translateY(10px);
     }
 
     .hero-art-wrap::before{
@@ -211,15 +212,25 @@
       inset:0;
       pointer-events:none;
       background:
-        radial-gradient(420px 260px at 55% 35%, rgba(214,178,94,.20), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.22));
+        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.25));
       mix-blend-mode:multiply;
-      opacity:.65;
     }
 
-    .hero-art-wrap:hover{
-      transform:translateY(-4px);
-      box-shadow:0 24px 62px rgba(0,0,0,.24);
+    /* glow emanating from painting */
+    .hero-art-wrap::after{
+      content:"";
+      position:absolute;
+      inset:-18%;
+      pointer-events:none;
+      background:
+        radial-gradient(
+          520px 420px at 50% 58%,
+          rgba(214,178,94,.55),
+          rgba(214,178,94,.25) 38%,
+          transparent 65%
+        );
+      mix-blend-mode:screen;
+      z-index:-1;
     }
 
     .hero-art-wrap img{
@@ -227,7 +238,7 @@
       display:block;
       max-height:560px;
       object-fit:cover;
-      filter:saturate(.92) contrast(1.02);
+      filter:saturate(.95) contrast(1.03);
     }
 
     .hero-art-hover{
@@ -259,11 +270,12 @@
       color:var(--muted);
     }
 
+    /* COPY */
     .hero-copy{
-      margin-top:2rem;
+      margin-top:2.4rem;
       max-width:72ch;
       border-top:1px solid rgba(0,0,0,.18);
-      padding-top:1.7rem;
+      padding-top:1.8rem;
     }
 
     .hero-pill{
@@ -276,11 +288,11 @@
 
     .hero-copy p:first-of-type::first-letter{
       float:left;
-      font-size:3.1rem;
+      font-size:3.2rem;
       line-height:.9;
       padding:.08em .12em 0 0;
       color:var(--accent);
-      text-shadow: 0 0 18px rgba(214,178,94,.18);
+      text-shadow:0 0 18px rgba(214,178,94,.25);
     }
 
     .hero-copy strong{
@@ -297,13 +309,11 @@
       padding:0 1.4rem 2.5rem;
       font-size:.95rem;
       color:var(--muted);
-      position:relative;
-      z-index:1;
     }
 
     @media(max-width:900px){
       .hero-grid{ grid-template-columns:1fr; }
-      .tagline-byline{ max-width:unset; }
+      .hero-art-wrap{ transform:none; }
     }
   </style>
 </head>
